@@ -1,0 +1,129 @@
+@extends('layouts.main')
+
+@section('title', 'Admin Dashboard')
+
+@section('content')
+<div class="container">
+    <h1 class="mb-4">WELCOME TO ADMIN</h1>
+
+    <div class="d-flex justify-content-between mx-auto" style="width: 90%;">
+        <!-- Kotak Total User -->
+        <div class="card shadow-sm p-4" style="width: 48%;">
+            <!-- Title -->
+            <h2 class="text-center mb-4">TOTAL USER</h2>
+            
+            <!-- Content -->
+            <div class="d-flex flex-column">
+                <!-- Row for BAAK and SARPRAS -->
+                <div class="d-flex justify-content-between w-100 mb-3">
+                    <!-- BAAK -->
+                    <div class="card shadow-sm border-0 text-center" style="width: 48%;">
+                        <div class="card-body">
+                            <img src="{{ asset('icons/baak-icon.png') }}" alt="BAAK" class="mb-2" style="width: 40px;">
+                            <h5 class="mb-0">BAAK</h5>
+                            <h1 class="mt-2">3</h1>
+                        </div>
+                    </div>
+                    
+                    <!-- Sarpras -->
+                    <div class="card shadow-sm border-0 text-center" style="width: 48%;">
+                        <div class="card-body">
+                            <img src="{{ asset('icons/sarpras-icon.png') }}" alt="Sarpras" class="mb-2" style="width: 40px;">
+                            <h5 class="mb-0">SARPRAS</h5>
+                            <h1 class="mt-2">1</h1>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pengguna -->
+                <div class="card shadow-sm border-0 text-center mx-auto" style="width: 50%;">
+                    <div class="card-body">
+                        <img src="{{ asset('icons/pengguna-icon.png') }}" alt="Pengguna" class="mb-2" style="width: 40px;">
+                        <h5 class="mb-0">PENGGUNA</h5>
+                        <h1 class="mt-2">10</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Kotak Total Ruangan -->
+        <div class="card shadow-sm p-4" style="width: 48%;">
+            <!-- Title -->
+            <h2 class="text-center mb-4">TOTAL RUANGAN</h2>
+            
+            <!-- Content -->
+            <div class="d-flex flex-column">
+                <!-- Row for Vokasi and Sarpras -->
+                <div class="d-flex justify-content-between w-100 mb-3">
+                    <!-- Vokasi -->
+                    <div class="card shadow-sm border-0 text-center" style="width: 48%;">
+                        <div class="card-body">
+                            <img src="{{ asset('icons/vokasi-icon.png') }}" alt="Vokasi" class="mb-2" style="width: 40px;">
+                            <h5 class="mb-0">VOKASI</h5>
+                            <h1 class="mt-2">1</h1>
+                        </div>
+                    </div>
+                    
+                    <!-- Sarpras -->
+                    <div class="card shadow-sm border-0 text-center" style="width: 48%;">
+                        <div class="card-body">
+                            <img src="{{ asset('icons/sarpras-icon.png') }}" alt="Sarpras" class="mb-2" style="width: 40px;">
+                            <h5 class="mb-0">SARPRAS</h5>
+                            <h1 class="mt-2">3</h1>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row for FLTB and Anggrek -->
+                <div class="d-flex justify-content-between w-100">
+                    <!-- FLTB -->
+                    <div class="card shadow-sm border-0 text-center" style="width: 48%;">
+                        <div class="card-body">
+                            <img src="{{ asset('icons/fltb-icon.png') }}" alt="FLTB" class="mb-2" style="width: 40px;">
+                            <h5 class="mb-0">FLTB</h5>
+                            <h1 class="mt-2">1</h1>
+                        </div>
+                    </div>
+                    
+                    <!-- Anggrek -->
+                    <div class="card shadow-sm border-0 text-center" style="width: 48%;">
+                        <div class="card-body">
+                            <img src="{{ asset('icons/anggrek-icon.png') }}" alt="Anggrek" class="mb-2" style="width: 40px;">
+                            <h5 class="mb-0">ANGGREK</h5>
+                            <h1 class="mt-2">2</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Statistik Booking -->
+    <div class="bg-white shadow rounded-lg p-4">
+        <h2 class="text-gray-600 text-lg font-semibold">STATISTIK BOOKING</h2>
+        <div class="grid grid-cols-4 gap-4 mt-4">
+            <div class="text-center">
+                <p class="text-lg font-bold">5</p>
+                <p>Pending</p>
+            </div>
+            <div class="text-center">
+                <p class="text-lg font-bold">0</p>
+                <p>Ditolak</p>
+            </div>
+            <div class="text-center">
+                <p class="text-lg font-bold">4</p>
+                <p>Disetujui</p>
+            </div>
+            <div class="text-center">
+                <p class="text-lg font-bold">9</p>
+                <p>Selesai</p>
+            </div>
+        </div>
+        <div class="mt-4 text-center">
+            <p class="text-gray-600">Total Permintaan Booking</p>
+            <p class="text-lg font-bold">18</p>
+        </div>
+    </div>
+</div>
+@endsection

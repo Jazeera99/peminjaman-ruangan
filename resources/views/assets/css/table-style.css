@@ -1,0 +1,25 @@
+.table-status td .status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.875rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+.table-status .status-selesai {
+    background-color: #28a745; /* Hijau */
+}
+
+.table-status .status-disetujui {
+    background-color: #007bff; /* Biru */
+}
+
+.table-status .status-proses {
+    background-color: #ffc107; /* Kuning */
+    color: #000; /* Warna teks hitam */
+}
+
+.table-status .status-rejected {
+    background-color: #dc3545; /* Merah */
+}

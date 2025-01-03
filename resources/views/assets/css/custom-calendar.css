@@ -1,0 +1,20 @@
+.fc .fc-daygrid-day-top {
+    font-size: 18px; /* Ukuran tulisan tanggal */
+  }
+  
+  .fc {
+    height: calc(100vh - 100px); /* Kalender memenuhi halaman */
+  }
+  
+  .fc-toolbar-title {
+    font-size: 24px; /* Ukuran tulisan bulan di toolbar */
+  }
+  
+  .fc-daygrid-day-number {
+    font-size: 16px; /* Ukuran tanggal di dalam kotak */
+  }
+  
+  .fc-scrollgrid {
+    overflow: hidden; /* Hilangkan scroll */
+  }
+  
