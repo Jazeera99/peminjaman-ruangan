@@ -101,8 +101,8 @@ Route::get('/user/dashboard', function () {
     ]);
 });
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
+Route::get('/dashboard/admin', function () {
+    return view('dashboard.admin');
 });
 
 Route::get('/admin/kalendar-reservasi', function () {

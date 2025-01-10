@@ -14,8 +14,8 @@
                 <h2 class="text-center mb-4">TOTAL USER</h2>
                 <div class="d-flex flex-column">
                     <div class="d-flex justify-content-between w-100 mb-3">
-                        @include('includes.content.user.baak')
-                        @include('includes.content.user.pengguna')
+                        @include('statistik.user.sarpras')
+                        @include('statistik.user.pengguna')
                     </div>
                 </div>
             </div>
@@ -27,8 +27,8 @@
                 <h2 class="text-center mb-4">TOTAL RUANGAN</h2>
                 <div class="d-flex flex-column">
                     <div class="d-flex justify-content-between w-100 mb-3">
-                        @include('includes.content.ruangan.vokasi')
-                        @include('includes.content.ruangan.fltb')
+                        @include('statistik.ruangan.sarpras')
+                        @include('statistik.ruangan.anggrek')
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
     <div class="d-flex flex-column align-items-center">
         <div class="col-6">
             <div class="card shadow-sm p-4">
-                @include('includes.content.statistik-booking')
+                @include('statistik.statistik-booking')
             </div>
         </div>
     </div>

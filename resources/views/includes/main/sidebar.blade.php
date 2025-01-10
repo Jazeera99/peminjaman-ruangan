@@ -15,9 +15,6 @@
         <a class="nav-link text-white" href="{{ route('admin.list-booking') }}"><i class="fas fa-list me-2"></i>List Booking </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white" href="{{ route('user/profil') }}"><i class="fas fa-key me-2"></i>Profil</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link text-white" href="#"><i class="fas fa-key me-2"></i>Ganti Password</a>
       </li>
       <li class="nav-item">
@@ -48,9 +45,6 @@
           <li><a class="dropdown-item" href="/includes/content/tables/data-ruangan">BAAK</a></li>
           <li><a class="dropdown-item" href="/includes/content/tables/data-ruangan">Sarpras</a></li>
         </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="{{ route('user/profil') }}"><i class="fas fa-key me-2"></i>Profil</a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-white" href="#"><i class="fas fa-key me-2"></i>Ganti Password</a>
