@@ -4,6 +4,6 @@
 
 @section('content')
 <div class="container">
-    @include('includes.content.tables.booking-status')
+    @include('table.booking-status')
 </div>
 @endsection
