@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between mb-3">
         <div>
             <h4>Data User</h4>
-            <button class="btn btn-primary">TAMBAH</button>
+            <button class="btn btn-primary"><a href="/form/form-tambah-user">TAMBAH USER</a></button>
         </div>
         <div>
             <button class="btn btn-success me-2">Unduh Excel</button>
@@ -17,8 +17,8 @@
             <thead class="table-primary text-center">
                 <tr>
                     <th>TANGGAL</th>
-                    <th>NIP</th>
                     <th>NAMA LENGKAP</th>
+                    <th>Email</th>
                     <th>PASSWORD</th>
                     <th>ROLE</th>
                     <th>AKSI</th>
@@ -28,8 +28,8 @@
                 <!-- Baris pertama -->
                 <tr class="text-center">
                     <td>05/12/2024</td>
-                    <td>12164656439</td>
                     <td>Dr. Andi Wijaya</td>
+                    <td>ulbibaak01@gmail.com</td>
                     <td>ulbibaak01</td>
                     <td>BAAK</td>
                     <td class="text-center">
@@ -40,8 +40,8 @@
                 <!-- Baris kedua -->
                 <tr class="text-center">
                     <td>05/12/2024</td>
-                    <td>12153565646</td>
                     <td>Prof. Agus Pratama</td>
+                    <td>ulbisarpras01@gmail.com</td>
                     <td>ulbisarpras01</td>
                     <td>SARPRAS</td>
                     <td class="text-center">
@@ -52,8 +52,8 @@
                 <!-- Baris ketiga -->
                 <tr class="text-center">
                     <td>05/12/2024</td>
-                    <td>12153547653</td>
                     <td>Dr. Rina Kartika</td>
+                    <td>ulbibaak02@gmail.com</td>
                     <td>ulbibaak02</td>
                     <td>BAAK</td>
                     <td class="text-center">
@@ -64,8 +64,8 @@
                 <!-- Baris keempat -->
                 <tr class="text-center">
                     <td>05/12/2024</td>
-                    <td>12164564564</td>
                     <td>Dr. Maya Sari</td>
+                    <td>ulbisarpras02@gmail.com</td>
                     <td>ulbisarpras02</td>
                     <td>SARPRAS</td>
                     <td class="text-center">

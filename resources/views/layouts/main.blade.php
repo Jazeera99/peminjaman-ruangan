@@ -44,8 +44,7 @@
         .content-area {
             flex-grow: 1;
             overflow-y: auto;
-            background-color: #f8f9fa;
-            padding: 20px;
+            padding: 0px;
         }
 
         .table-responsive {
@@ -53,10 +52,32 @@
             overflow-x: auto;
         }
 
-        table {
+        .table {
             width: 100%;
             max-width: 100%;
         }
+
+        .main-footer {
+            background-color: #f0f0f0; /* Warna abu-abu */
+            color: #333; /* Warna teks */
+            padding: 10px 20px; /* Jarak di dalam footer */
+            text-align: center; /* Teks berada di tengah */
+            font-size: 14px; /* Ukuran teks */
+            height: auto; /* Tinggi bisa diatur, sesuaikan di sini */
+            border-top: 1px solid #ddd; /* Opsional: garis atas footer */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            text-align: left;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
     </style>
 </head>
 
@@ -69,9 +90,20 @@
         <div class="content">
             <!-- Navbar -->
             @include('includes.main.navbar')
+            <h1 class="mb-3" style="margin-left: 45px; margin-top: 10px; margin-bottom: 0px; color: black;">
+                @if (Auth::user()->role == 'admin')
+                    WELCOME TO ADMIN
+                @elseif (Auth::user()->role == 'baak')
+                    WELCOME TO BAAK
+                @elseif (Auth::user()->role == 'sarpras')
+                    WELCOME TO SARPRAS
+                @else
+                    WELCOME TO {{ strtoupper(Auth::user()->name) }}
+                @endif
+            </h1>
 
             <!-- Content Area -->
-            <div class="content-area mt-4">
+            <div class="content-area mt-1">
                 @yield('content')
             </div>
         </div>

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="container mt-5">
+    <div class="container mt-1">
         <div class="row justify-content-center">
             <div class="col-md-5">
                 <div class="card">
@@ -15,6 +15,12 @@
                                 <label for="nama" class="form-label">Nama Lengkap</label>
                                 <input type="text" id="nama" name="nama" class="form-control"
                                     placeholder="Masukkan nama Anda" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for=nomor_Whatsapp" class="form-label">NO WHATSAPP</label>
+                                <input type="nomor_Whatsapp" id="nomor_Whatsapp" name="nomor_Whatsapp" class="form-control"
+                                    placeholder="Masukkan nomor whatsapp Anda" required>
                             </div>
 
                             <!-- Nama Ruangan dan Tanggal -->
@@ -75,9 +81,16 @@
                                 <textarea id="keterangan" name="keterangan" class="form-control"></textarea>
                             </div>
 
+                            {{-- Pas Foto --}}
+                            <div class="mb-3"> 
+                                <label for="pasFoto">Pas Foto</label>
+                                <input type="file" name="pasFoto" id="pasFoto" class="form-control"> 
+                            
+                            </div> 
+
                             <!-- Upload Surat -->
                             <div class="mb-3">
-                                <label for="file">Surat Permohonan dan Lembar Disposisi (Jika Ada)</label>
+                                <label for="file">Surat Permohonan (wajib) dan Lembar Disposisi (Jika Ada)</label>
                                 <input type="file" name="file" id="file" class="form-control">
                             </div>
 
@@ -115,6 +128,42 @@
                     sarprasForm.style.display = 'none';
                 }
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const ruanganInput = document.getElementById('ruangan');
+        const tanggalInput = document.getElementById('tanggal');
+        const waktuMulaiInput = document.getElementById('waktu_mulai');
+        const waktuSelesaiInput = document.getElementById('waktu_selesai');
+        const jumlahKursiInput = document.getElementById('jumlah_kursi');
+
+            async function updateAvailableSeats() {
+                const ruangan = ruanganInput.value;
+                const tanggal = tanggalInput.value;
+                const waktuMulai = waktuMulaiInput.value;
+                const waktuSelesai = waktuSelesaiInput.value;
+
+                if (ruangan && tanggal && waktuMulai && waktuSelesai) {
+                    try {
+                        const response = await fetch(`/api/available-seats?ruangan=${ruangan}&tanggal=${tanggal}&waktu_mulai=${waktuMulai}&waktu_selesai=${waktuSelesai}`);
+                        const data = await response.json();
+
+                        if (data.success) {
+                            jumlahKursiInput.max = data.availableSeats;
+                            jumlahKursiInput.placeholder = `Max ${data.availableSeats} kursi`;
+                        } else {
+                            alert(data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error fetching available seats:', error);
+                    }
+                }
+            }
+
+            ruanganInput.addEventListener('change', updateAvailableSeats);
+            tanggalInput.addEventListener('change', updateAvailableSeats);
+            waktuMulaiInput.addEventListener('change', updateAvailableSeats);
+            waktuSelesaiInput.addEventListener('change', updateAvailableSeats);
         });
     </script>
 @endsection

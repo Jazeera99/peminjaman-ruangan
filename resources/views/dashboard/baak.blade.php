@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="container">
-    <h1 class="mb-4">WELCOME TO ADMIN</h1>
 
     <!-- Baris Total User dan Total Ruangan -->
     <div class="row mb-4">
@@ -44,4 +43,5 @@
         </div>
     </div>
 </div>
+@include('includes.main.footer')
 @endsection

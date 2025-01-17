@@ -26,10 +26,10 @@ class DashBoardController extends Controller
         return view('user.profil');
     }
 
-    public function userFormBooking()
-    {
-        return view('form.form-booking');
-    }
+    // public function formFormBooking()
+    // {
+    //     return view('form.form-booking');
+    // }
 
     public function adminRuangan()
     {

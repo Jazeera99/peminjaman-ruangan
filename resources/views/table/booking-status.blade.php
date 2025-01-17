@@ -14,16 +14,17 @@
             <thead class="table-primary text-center">
                 <tr>
                     <th>ID</th>
-                    <th>TANGGAL</th>
+                    <th>TANGGAL Mulai</th>
                     <th>WAKTU MULAI</th>
                     <th>WAKTU SELESAI</th>
                     <th>RUANGAN</th>
                     <th>PEMINJAM</th>
                     <th>ORGANISASI</th>
                     <th>NAMA KEGIATAN</th>
-                    <th>JUMLAH PESERTA</th>
-                    <th>PERALATAN</th>
                     <th>NO WHATSAPP</th>
+                    <th>KETERANGAN</th>
+                    <th>PAS FOTO</th>
+                    <th>SURAT PERMOHONAN DAN SURAT DISPOSISI</th>
                     <th>AKSI</th>
                 </tr>
             </thead>
@@ -38,9 +39,13 @@
                         <td>{{ $peminjaman->nama_peminjam }}</td>
                         <td>{{ $peminjaman->nama_ormawa }}</td>
                         <td>{{ $peminjaman->nama_kegiatan }}</td>
-                        <td>{{ $peminjaman->jumlah_peserta }}</td>
-                        <td>{{ $peminjaman->peralatan }}</td>
                         <td>{{ $peminjaman->nomor_Whatsapp }}</td>
+                        <th>PAS FOTO</th>
+                        <th>SURAT PERMOHONAN DAN SURAT DISPOSISI</th>
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-sm">EDIT</button>
+                            <button class="btn btn-danger btn-sm">HAPUS</button>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
