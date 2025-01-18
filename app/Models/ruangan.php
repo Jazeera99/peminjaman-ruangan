@@ -20,6 +20,22 @@ class Ruangan extends Model
         'deskripsi',
     ];
 
+    public static function gedungOptions()
+    {
+        return [
+            'FLTB' => 'FLTB',
+            'Pendidikan' => 'Pendidikan',
+            'Anggrek' => 'Anggrek',
+            'GOR' => 'GOR',
+            'Auditorium' => 'Auditorium',
+        ];
+    }
+
+    public static function getNamaRuangans()
+    {
+        return self::pluck('nama', 'id'); // Mengambil nama dan id ruangan
+    }
+
     // Relasi: Setiap ruangan memiliki banyak peminjaman
     public function peminjaman()
     {

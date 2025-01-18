@@ -40,8 +40,9 @@
                         <td>{{ $peminjaman->nama_ormawa }}</td>
                         <td>{{ $peminjaman->nama_kegiatan }}</td>
                         <td>{{ $peminjaman->nomor_Whatsapp }}</td>
-                        <th>PAS FOTO</th>
-                        <th>SURAT PERMOHONAN DAN SURAT DISPOSISI</th>
+                        <td>{{ $peminjaman->keterangan }}</td>
+                        <td>{{ $peminjaman->pas_foto }}</td>
+                        <td>{{ $peminjaman->file_tambahan }}</td> 
                         <td class="text-center">
                             <button class="btn btn-primary btn-sm">EDIT</button>
                             <button class="btn btn-danger btn-sm">HAPUS</button>
