@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="container">
-    <h1 class="mb-4">WELCOME TO ADMIN</h1>
 
     <!-- Baris Total User dan Total Ruangan -->
     <div class="row mb-4">
@@ -29,10 +28,10 @@
                 <div class="d-flex flex-column">
                     <div class="d-flex justify-content-between w-100 mb-3">
                         @include('statistik.ruangan.vokasi')
-                        @include('statistik.ruangan.sarpras')
+                        @include('statistik.ruangan.fltb')
                     </div>
                     <div class="d-flex justify-content-between w-100">
-                        @include('statistik.ruangan.fltb')
+                        @include('statistik.ruangan.sarpras')
                         @include('statistik.ruangan.anggrek')
                     </div>
                 </div>
@@ -49,4 +48,5 @@
         </div>
     </div>
 </div>
+@include('includes.main.footer')
 @endsection

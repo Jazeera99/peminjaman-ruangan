@@ -12,10 +12,10 @@
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-status">
             <thead class="table-primary text-center">
-                <tr>
+                <tr style="text-align: center; vertical-align: middle;">
                     <th>TANGGAL</th>
-                    <th>NIP</th>
                     <th>NAMA LENGKAP</th>
+                    <th>Email</th>
                     <th>PASSWORD</th>
                     <th>ROLE</th>
                     <th>AKSI</th>
@@ -25,8 +25,8 @@
                 <!-- Baris pertama -->
                 <tr class="text-center">
                     <td>05/12/2024</td>
-                    <td>12164656439</td>
                     <td>Dr. Andi Wijaya</td>
+                    <td>ulbibaak01@gmail.com</td>
                     <td>ulbibaak01</td>
                     <td>BAAK</td>
                     <td class="text-center">
@@ -37,8 +37,8 @@
                 <!-- Baris kedua -->
                 <tr class="text-center">
                     <td>05/12/2024</td>
-                    <td>12153547653</td>
                     <td>Dr. Rina Kartika</td>
+                    <td>ulbibaak02@gmail.com</td>
                     <td>ulbibaak02</td>
                     <td>BAAK</td>
                     <td class="text-center">

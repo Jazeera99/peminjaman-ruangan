@@ -19,10 +19,21 @@ Route::get('/dashboard/admin', [DashboardController::class, 'adminDashboard']);
 Route::get('/dashboard/peminjam', [DashboardController::class, 'PeminjamDashboard']);
 Route::get('/{role}/kalendar-reservasi', [DashboardController::class, 'KalendarReservasi'])->name('kalendar.reservasi');
 Route::get('/user/profil', [DashboardController::class, 'userProfil']);
-Route::get('/user/form-booking', [DashboardController::class, 'userFormBooking']);
+// Route::get('/user/form-booking', [DashboardController::class, 'userFormBooking']);
 Route::get('/admin/ruangan', [DashboardController::class, 'adminRuangan']);
 Route::get('/user/table/user-baak', [DashboardController::class, 'tableUserBaak']);
 Route::get('/user/table/user-sarpras', [DashboardController::class, 'tableUserSarpras']);
 Route::get('/admin/user', [DashboardController::class, 'adminUser']);
 Route::get('/dashboard/baak', [DashboardController::class, 'dashboardBaak']);
 Route::get('/dashboard/sarpras', [DashboardController::class, 'dashboardSarpras']);
+
+
+Route::get('/form/form-booking', function () {
+    return view('form.form-booking');
+});
+Route::get('/form/form-tambah-ruangan', function () {
+    return view('form.form-tambah-ruangan');
+});
+Route::get('/form/form-tambah-user', function () {
+    return view('form.form-tambah-user');
+});

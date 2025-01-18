@@ -21,6 +21,7 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+        // dd($request);
 
         // Coba login
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
