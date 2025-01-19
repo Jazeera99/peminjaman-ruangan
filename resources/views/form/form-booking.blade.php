@@ -18,7 +18,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for=nomor_Whatsapp" class="form-label">NO WHATSAPP</label>
+                                <label for="nomor_Whatsapp" class="form-label">NO WHATSAPP</label>
                                 <input type="nomor_Whatsapp" id="nomor_Whatsapp" name="nomor_Whatsapp" class="form-control"
                                     placeholder="Masukkan nomor whatsapp Anda" required>
                             </div>
@@ -29,9 +29,9 @@
                                     <label for="ruangan" class="form-label">Nama Ruangan</label>
                                     <select id="ruangan" name="ruangan" class="form-control" required>
                                         <option value="">-- Pilih Ruangan --</option>
-                                        <option value="Ruang A">Ruang A</option>
-                                        <option value="Ruang B">Ruang B</option>
-                                        <option value="Ruang Sarpras">Sarpras</option>
+                                        @foreach ($ruangans as $ruangan)
+                                            <option value="{{ $ruangan->id }}">{{ $ruangan->nama }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -82,11 +82,11 @@
                             </div>
 
                             {{-- Pas Foto --}}
-                            <div class="mb-3"> 
+                            <div class="mb-3">
                                 <label for="pasFoto">Pas Foto</label>
-                                <input type="file" name="pasFoto" id="pasFoto" class="form-control"> 
-                            
-                            </div> 
+                                <input type="file" name="pasFoto" id="pasFoto" class="form-control">
+
+                            </div>
 
                             <!-- Upload Surat -->
                             <div class="mb-3">
@@ -130,12 +130,12 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
-        const ruanganInput = document.getElementById('ruangan');
-        const tanggalInput = document.getElementById('tanggal');
-        const waktuMulaiInput = document.getElementById('waktu_mulai');
-        const waktuSelesaiInput = document.getElementById('waktu_selesai');
-        const jumlahKursiInput = document.getElementById('jumlah_kursi');
+        document.addEventListener('DOMContentLoaded', function() {
+            const ruanganInput = document.getElementById('ruangan');
+            const tanggalInput = document.getElementById('tanggal');
+            const waktuMulaiInput = document.getElementById('waktu_mulai');
+            const waktuSelesaiInput = document.getElementById('waktu_selesai');
+            const jumlahKursiInput = document.getElementById('jumlah_kursi');
 
             async function updateAvailableSeats() {
                 const ruangan = ruanganInput.value;
@@ -145,7 +145,9 @@
 
                 if (ruangan && tanggal && waktuMulai && waktuSelesai) {
                     try {
-                        const response = await fetch(`/api/available-seats?ruangan=${ruangan}&tanggal=${tanggal}&waktu_mulai=${waktuMulai}&waktu_selesai=${waktuSelesai}`);
+                        const response = await fetch(
+                            `/api/available-seats?ruangan=${ruangan}&tanggal=${tanggal}&waktu_mulai=${waktuMulai}&waktu_selesai=${waktuSelesai}`
+                            );
                         const data = await response.json();
 
                         if (data.success) {

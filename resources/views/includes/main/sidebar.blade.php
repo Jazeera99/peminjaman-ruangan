@@ -16,10 +16,10 @@
               <a class="nav-link text-white" href="/list/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link text-white" href="/table/data-user"><i class="fas fa-user me-2"></i>Manage User</a>
+              <a class="nav-link text-white" href=""><i class="fas fa-user me-2"></i>Manage User</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="/table/data-ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
+            <a class="nav-link text-white" href="/admin/ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
           </li>
           <li class="nav-item">
               <!-- Form logout -->
@@ -39,6 +39,9 @@
           </li>
           <li class="nav-item">
               <a class="nav-link text-white" href="{{ route('kalendar.reservasi', ['role' => 'ormawa', 'ukm']) }}"><i class="fas fa-calendar-alt me-2"></i>Kalendar Peminjaman</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link text-white" href="booking"><i class="fas fa-list me-2"></i>Booking Ruangan</a>
           </li>
           <li class="nav-item">
               <a class="nav-link text-white" href="/peminjaman/list"><i class="fas fa-list me-2"></i>List Peminjaman</a>

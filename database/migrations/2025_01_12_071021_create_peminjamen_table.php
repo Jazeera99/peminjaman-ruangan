@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('nama_ormawa', 100); // Kolom ORGANISASI
             $table->string('nama_kegiatan', 100); // Kolom NAMA KEGIATAN
             $table->integer('jumlah_peserta'); // Kolom JUMLAH PESERTA
-            $table->string('peralatan')->nullable(); // Kolom PERALATAN
+            $table->string('keterangan')->nullable(); // Kolom PERALATAN
             $table->string('nomor_Whatsapp', 15); // Kolom NO WHATSAPP
             $table->timestamps(); // Kolom untuk created_at dan updated_at
         });

@@ -19,7 +19,6 @@
                     <th>ROOM ID</th>
                     <th>GEDUNG</th>
                     <th>NAMA RUANGAN</th>
-                    <th>DESKRIPSI</th>
                     <th>AKSI</th>
                 </tr>
             </thead>
