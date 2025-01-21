@@ -38,7 +38,7 @@
                         <td>{{ $peminjaman->waktu_selesai }}</td>
                         <td>{{ $peminjaman->room->nama ?? '-' }}</td>
                         <td>{{ $peminjaman->nama_peminjam }}</td>
-                        <td>{{ $peminjaman->nama_ormawa }}</td>
+                        <td>{{ $peminjaman->user->nama ?? '-' }}</td>
                         <td>{{ $peminjaman->nama_kegiatan }}</td>
                         <td>{{ $peminjaman->nomor_Whatsapp }}</td>
                         <td>{{ $peminjaman->keterangan }}</td>

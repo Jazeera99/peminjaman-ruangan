@@ -1,8 +1,9 @@
+@extends('layouts.app')
 <div class="container">
     <!-- Tombol Unduh -->
     <div class="d-flex justify-content-between mb-3">
         <div class="text-center">
-            <a class="btn btn-primary text-white" href="/form/form-tambah-ruangan">Tambah Ruangan</a>
+            <a class="btn btn-primary text-white" href="/addruangan">Tambah Ruangan</a>
         </div>
         <div>
             <button class="btn btn-success me-2">Unduh Excel</button>
@@ -23,51 +24,23 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Baris pertama -->
-                <tr class="text-center">
-                    <td>1</td>
-                    <td>Vokasi</td>
-                    <td>R 113</td>
-                    <td>Deskripsi tentang ruangan</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm" onclick="showEditForm(1)">EDIT</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteData(1)">HAPUS</button>
-                    </td>
-                </tr>
-                <!-- Baris kedua -->
-                <tr class="text-center">
-                    <td>2</td>
-                    <td>FLTB</td>
-                    <td>R 202 FLTB</td>
-                    <td>Deskripsi tentang ruangan</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm">EDIT</button>
-                        <button class="btn btn-danger btn-sm">HAPUS</button>
-                    </td>
-                </tr>
-                <!-- Baris ketiga -->
-                <tr class="text-center">
-                    <td>3</td>
-                    <td>Anggrek</td>
-                    <td>A2</td>
-                    <td>Deskripsi tentang ruangan</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm">EDIT</button>
-                        <button class="btn btn-danger btn-sm">HAPUS</button>
-                    </td>
-                </tr>
-                <!-- Baris keempat -->
-                <tr class="text-center">
-                    <td>4</td>
-                    <td>Sarpras</td>
-                    <td>Auditorium</td>
-                    <td>Deskripsi tentang ruangan</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm">EDIT</button>
-                        <button class="btn btn-danger btn-sm">HAPUS</button>
-                    </td>
-                </tr>
+                @forelse ($ruangans as $ruangan)
+                    <tr>
+                        <td>{{ $ruangan->id }}</td>
+                        <td>{{ $ruangan->gedung }}</td>
+                        <td>{{ $ruangan->nama }}</td>
+                        <td>{{ $ruangan->deskripsi ?? '-' }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-sm">EDIT</button>
+                            <button class="btn btn-danger btn-sm">HAPUS</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">Data ruangan belum tersedia.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
-</div>
+    

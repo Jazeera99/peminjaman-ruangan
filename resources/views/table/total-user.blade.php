@@ -1,8 +1,9 @@
+@extends('layouts.app')
 <div class="container mt-4">
     <!-- Tombol Unduh -->
     <div class="d-flex justify-content-between mb-3">
         <div class="text-center">
-            <a class="btn btn-primary text-white" href="/form/form-tambah-user">Tambah User</a>
+            <a class="btn btn-primary text-white" href="/adduser">Tambah User</a>
         </div>
         <div>
             <button class="btn btn-success me-2">Unduh Excel</button>
@@ -24,55 +25,25 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Baris pertama -->
-                <tr class="text-center">
-                    <td>05/12/2024</td>
-                    <td>Dr. Andi Wijaya</td>
-                    <td>ulbibaak01@gmail.com</td>
-                    <td>ulbibaak01</td>
-                    <td>BAAK</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm">EDIT</button>
-                        <button class="btn btn-danger btn-sm">HAPUS</button>
-                    </td>
-                </tr>
-                <!-- Baris kedua -->
-                <tr class="text-center">
-                    <td>05/12/2024</td>
-                    <td>Prof. Agus Pratama</td>
-                    <td>ulbisarpras01@gmail.com</td>
-                    <td>ulbisarpras01</td>
-                    <td>SARPRAS</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm">EDIT</button>
-                        <button class="btn btn-danger btn-sm">HAPUS</button>
-                    </td>
-                </tr>
-                <!-- Baris ketiga -->
-                <tr class="text-center">
-                    <td>05/12/2024</td>
-                    <td>Dr. Rina Kartika</td>
-                    <td>ulbibaak02@gmail.com</td>
-                    <td>ulbibaak02</td>
-                    <td>BAAK</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm">EDIT</button>
-                        <button class="btn btn-danger btn-sm">HAPUS</button>
-                    </td>
-                </tr>
-                <!-- Baris keempat -->
-                <tr class="text-center">
-                    <td>05/12/2024</td>
-                    <td>Dr. Maya Sari</td>
-                    <td>ulbisarpras02@gmail.com</td>
-                    <td>ulbisarpras02</td>
-                    <td>SARPRAS</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm">EDIT</button>
-                        <button class="btn btn-danger btn-sm">HAPUS</button>
-                    </td>
-                </tr>
+                @foreach ($users as $user)
+                    <tr>
+                        <td>
+                            @if ($user->created_at)
+                                {{ $user->created_at->format('d-m-Y') }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td>{{ $user->nama }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->password }}</td>
+                        <td>{{ ucfirst($user->role) }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-sm">EDIT</button>
+                            <button class="btn btn-danger btn-sm">HAPUS</button>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
-</div>

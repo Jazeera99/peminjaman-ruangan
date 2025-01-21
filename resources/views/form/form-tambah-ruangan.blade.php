@@ -25,6 +25,11 @@
                                 placeholder="Masukkan nama ruangan" required>
                         </div>
                         <div class="mb-3">
+                            <label for="kapasitas" class="form-label">Kapasitas</label>
+                            <input type="number" id="kapasitas" name="kapasitas" class="form-control" 
+                                   placeholder="Masukkan kapasitas ruangan" required>
+                        </div>                        
+                        <div class="mb-3">
                             <label for="deskripsi" class="deskripsi">Deskripsi</label>
                             <input type="text" id="deskripsi" name="deskripsi" class="form-control"
                                 placeholder="Masukkan deskripsi ruangan" required>

@@ -31,4 +31,9 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(Ruangan::class, 'room_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
