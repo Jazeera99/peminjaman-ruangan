@@ -1,7 +1,10 @@
 <div class="sidebar" style="width: 250px; background-color: #0066f5; color: white; height: 100%; display: flex; flex-direction: column;">
   <div class="sidebar-header" style="text-align: center; padding: 15px; font-size: 18px; font-weight: bold; color: #f8f9fa; border-bottom: 1px solid #495057;">
+    <button class="btn-toggle" id="toggleSidebar" style="background: none; border: none; color: white; position: absolute; left: 210px; padding: 0; outline: none;">
+        <i class="fas fa-bars" style="margin: 0; padding: 0;"></i>
+    </button>
     <img src="../images/logo-roomease.png" alt="Logo ROOMEASE" class="navbar-logo" style="height: 100px;"></a>
-  </div>
+</div>
   <ul class="nav flex-column sidebar-menu">
 
       {{-- Sidebar untuk Admin --}}
@@ -16,7 +19,7 @@
               <a class="nav-link text-white" href="/list/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link text-white" href=""><i class="fas fa-user me-2"></i>Manage User</a>
+              <a class="nav-link text-white" href="/list/data-user"><i class="fas fa-user me-2"></i>Manage User</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" href="/admin/ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
@@ -41,7 +44,7 @@
               <a class="nav-link text-white" href="{{ route('kalendar.reservasi', ['role' => 'ormawa', 'ukm']) }}"><i class="fas fa-calendar-alt me-2"></i>Kalendar Peminjaman</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link text-white" href="booking"><i class="fas fa-list me-2"></i>Booking Ruangan</a>
+              <a class="nav-link text-white" href="booking"><i class="fas fa-list me-2"></i>Form Peminjaman</a>
           </li>
           <li class="nav-item">
               <a class="nav-link text-white" href="/peminjaman/list"><i class="fas fa-list me-2"></i>List Peminjaman</a>
@@ -68,9 +71,12 @@
           <li class="nav-item">
               <a class="nav-link text-white" href="/baak/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
           </li>
-          {{-- <li class="nav-item">
-            <a class="nav-link text-white" href="{{ route('kalendar.reservasi', ['role' => 'admin']) }}"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
-          </li> --}}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/list/data-user"><i class="fas fa-user me-2"></i>Manage User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/list/data-ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
+          </li>
           <li class="nav-item">
               <!-- Form logout -->
               <form action="{{ route('logout') }}" method="POST" style="display: inline;">
@@ -93,9 +99,12 @@
           <li class="nav-item">
               <a class="nav-link text-white" href="/sarpras/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
           </li>
-          {{-- <li class="nav-item">
-            <a class="nav-link text-white" href="{{ route('kalendar.reservasi', ['role' => 'admin']) }}"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
-          </li> --}}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/list/data-user"><i class="fas fa-user me-2"></i>Manage User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/list/data-ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
+          </li> 
           <li class="nav-item">
               <!-- Form logout -->
               <form action="{{ route('logout') }}" method="POST" style="display: inline;">
@@ -109,3 +118,7 @@
 
   </ul>
 </div>
+
+
+
+

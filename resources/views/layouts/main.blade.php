@@ -20,6 +20,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/js/sidebar.js') }}"></script>
+
     <style>
         body {
             margin: 0;
@@ -106,12 +108,16 @@
             <div class="content-area mt-1">
                 @yield('content')
             </div>
+
+            <!-- Footer -->
+            @include('includes.main.footer')
         </div>
     </div>
 
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 
 </html>

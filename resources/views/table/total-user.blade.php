@@ -1,9 +1,8 @@
 <div class="container mt-4">
     <!-- Tombol Unduh -->
     <div class="d-flex justify-content-between mb-3">
-        <div>
-            <h4>Data User</h4>
-            <button class="btn btn-primary"><a href="/form/form-tambah-user">TAMBAH USER</a></button>
+        <div class="text-center">
+            <a class="btn btn-primary text-white" href="/form/form-tambah-user">Tambah User</a>
         </div>
         <div>
             <button class="btn btn-success me-2">Unduh Excel</button>

@@ -2,7 +2,7 @@
     <!-- Tombol Unduh -->
     <div class="d-flex justify-content-between mb-3">
         <div class="text-center">
-            <a class="btn btn-primary text-white" href="/form/form-tambah-user">Tambah User</a>
+            <a class="btn btn-primary text-white" href="/form/form-tambah-ruangan">Tambah Ruangan</a>
         </div>
         <div>
             <button class="btn btn-success me-2">Unduh Excel</button>
@@ -15,22 +15,20 @@
         <table class="table table-bordered table-hover table-status">
             <thead class="table-primary text-center">
                 <tr style="text-align: center; vertical-align: middle;">
-                    <th>TANGGAL</th>
-                    <th>NAMA LENGKAP</th>
-                    <th>Email</th>
-                    <th>PASSWORD</th>
-                    <th>ROLE</th>
+                    <th>ROOM ID</th>
+                    <th>GEDUNG</th>
+                    <th>NAMA RUANGAN</th>
+                    <th>DESKRIPSI</th>
                     <th>AKSI</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Baris pertama -->
                 <tr class="text-center">
-                    <td>05/12/2024</td>
-                    <td>Dr. Andi Wijaya</td>
-                    <td>ulbibaak01@gmail.com</td>
-                    <td>ulbibaak01</td>
-                    <td>BAAK</td>
+                    <td>1</td>
+                    <td>Anggrek</td>
+                    <td>A2</td>
+                    <td>Deskripsi tentang ruangan</td>
                     <td class="text-center">
                         <button class="btn btn-primary btn-sm">EDIT</button>
                         <button class="btn btn-danger btn-sm">HAPUS</button>
@@ -38,11 +36,10 @@
                 </tr>
                 <!-- Baris kedua -->
                 <tr class="text-center">
-                    <td>05/12/2024</td>
-                    <td>Dr. Rina Kartika</td>
-                    <td>ulbibaak02@gmail.com</td>
-                    <td>ulbibaak02</td>
-                    <td>BAAK</td>
+                    <td>2</td>
+                    <td>Sarpras</td>
+                    <td>Auditorium</td>
+                    <td>Deskripsi tentang ruangan</td>
                     <td class="text-center">
                         <button class="btn btn-primary btn-sm">EDIT</button>
                         <button class="btn btn-danger btn-sm">HAPUS</button>

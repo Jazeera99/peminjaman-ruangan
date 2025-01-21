@@ -11,12 +11,14 @@
         <div class="col-md-6">
             <div class="card shadow-sm p-4 h-100">
                 <h2 class="text-center mb-4">TOTAL USER</h2>
-                      <div class="d-flex flex-column">
-                    <div class="d-flex justify-content-between w-100 mb-3">
+                <div class="d-flex flex-column">
+                    <div class="d-flex justify-content-between w-100 sm-5">
                         @include('statistik.user.baak')
                         @include('statistik.user.sarpras')
                     </div>
-                    @include('statistik.user.pengguna')
+                    <div class="d-flex justify-content-between w-100 md-3 mt-3">
+                        @include('statistik.user.pengguna')
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,5 +50,4 @@
         </div>
     </div>
 </div>
-@include('includes.main.footer')
 @endsection

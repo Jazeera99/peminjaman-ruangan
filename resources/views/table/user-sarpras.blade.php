@@ -1,7 +1,9 @@
 <div class="container mt-4">
     <!-- Tombol Unduh -->
     <div class="d-flex justify-content-between mb-3">
-        <h4>Data User</h4>
+        <div class="text-center">
+            <a class="btn btn-primary text-white" href="/form/form-tambah-user">Tambah User</a>
+        </div>
         <div>
             <button class="btn btn-success me-2">Unduh Excel</button>
             <button class="btn btn-danger">Unduh PDF</button>
@@ -22,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Baris pertama -->
+                <!-- Baris ketiga -->
                 <tr class="text-center">
                     <td>05/12/2024</td>
                     <td>Prof. Agus Pratama</td>
@@ -34,7 +36,7 @@
                         <button class="btn btn-danger btn-sm">HAPUS</button>
                     </td>
                 </tr>
-                <!-- Baris kedua -->
+                <!-- Baris keempat -->
                 <tr class="text-center">
                     <td>05/12/2024</td>
                     <td>Dr. Maya Sari</td>

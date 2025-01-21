@@ -18,7 +18,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="nomor_Whatsapp" class="form-label">NO WHATSAPP</label>
+                                <label for="nomor_Whatsapp" class="form-label">No WhatsApp</label>
                                 <input type="nomor_Whatsapp" id="nomor_Whatsapp" name="nomor_Whatsapp" class="form-control"
                                     placeholder="Masukkan nomor whatsapp Anda" required>
                             </div>

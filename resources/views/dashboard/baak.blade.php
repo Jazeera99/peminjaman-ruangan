@@ -43,5 +43,4 @@
         </div>
     </div>
 </div>
-@include('includes.main.footer')
 @endsection

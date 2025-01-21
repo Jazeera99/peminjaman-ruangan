@@ -6,9 +6,26 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link text-black" href="#">Hai, User</a>
-        </li>
+        @if (Auth::user()->role == 'sarpras')
+          <li class="nav-item">
+            <a class="nav-link text-black" href="#">Hai, Sarpras</a>
+          </li>
+        @endif
+        @if (Auth::user()->role == 'baak')
+          <li class="nav-item">
+            <a class="nav-link text-black" href="#">Hai, BAAK</a>
+          </li>
+        @endif
+        @if (Auth::user()->role == 'admin')
+          <li class="nav-item">
+            <a class="nav-link text-black" href="#">Hai, Admin</a>
+          </li>
+        @endif
+        @if (Auth::user()->role == 'peminjam')
+          <li class="nav-item">
+            <a class="nav-link text-black" href="#">Hai, User</a>
+          </li>
+        @endif
       </ul>
     </div>
   </div>

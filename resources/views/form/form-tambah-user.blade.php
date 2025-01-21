@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row justify-content-center mt-1"> 
-    <div class="col-md-5"> <div class="card"> 
+    <div class="col-md-4"> <div class="card"> 
         <h4 class="card-header text-center">{{ __('FORM TAMBAH USER') }}</h4> 
         <div class="card-body"> 
             <form action="/add-user" method="POST"> 
@@ -19,7 +19,7 @@
                     <label for="password" class="form-label">Password</label> 
                     <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password user" required> 
                 </div>
-                <div class="col-md-6">
+                <div class="mb-3">
                     <label for="role" class="role">Role</label>
                     <select id="role" name="role" class="form-control" required>
                         <option value="">-- Pilih role --</option>
@@ -28,7 +28,7 @@
                         <option value="sarpras">Sarpras</option>
                     </select>
                 </div>
-                <div class="text-center"> 
+                <div class="text-center mt-3"> 
                     <button type="submit" class="btn btn-primary">Tambah User</button> 
                 </div> 
             </form> 
