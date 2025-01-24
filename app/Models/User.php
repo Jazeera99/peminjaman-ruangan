@@ -38,10 +38,6 @@ class User extends Authenticatable
     /**
      * Setter untuk password (otomatis hashing).
      */
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = bcrypt($password);
-    }
 
     public function peminjaman()
     {
