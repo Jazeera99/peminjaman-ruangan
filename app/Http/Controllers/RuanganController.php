@@ -45,7 +45,7 @@ class RuanganController extends Controller
         ]);
 
         // Redirect setelah menyimpan data
-        return redirect()->back()->with('success', 'Ruangan berhasil ditambahkan');
+        return redirect()->route('rooms.table')->with('success', 'Ruangan berhasil ditambahkan');
     }
 
     /**
@@ -59,24 +59,51 @@ class RuanganController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ruangan $ruangan)
+    public function edit($id)
     {
-        //
+        // Cari ruangan berdasarkan ID
+        $ruangans = Ruangan::findOrFail($id);
+
+        // Tampilkan view form update dengan data ruangan
+        return view('form.form-update-ruangan', compact('ruangans'));
     }
+
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ruangan $ruangan)
+    public function update(Request $request, $id)
     {
-        //
+        // Validasi input
+        $validatedData = $request->validate([
+            'gedung' => 'required|string',
+            'nama' => 'required|string|max:255',
+            'kapasitas' => 'required|integer|min:1',
+            'deskripsi' => 'required|string|max:500',
+        ]);
+
+        // Cari ruangan berdasarkan ID
+        $ruangans = Ruangan::findOrFail($id);
+
+        // Update data ruangan
+        $ruangans->update($validatedData);
+
+        return redirect()->route('rooms.table')->with('success', 'Ruangan berhasil diupdate.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ruangan $ruangan)
+    public function destroy($id)
     {
-        //
+        // Cari ruangan berdasarkan ID
+        $ruangans = Ruangan::findOrFail($id);
+
+        // Hapus ruangan
+        $ruangans->delete();
+
+        return redirect()->route('rooms.table')->with('success', 'Ruangan berhasil dihapus.');
     }
 }

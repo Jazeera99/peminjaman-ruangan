@@ -39,8 +39,17 @@
                         <td>{{ $user->password }}</td>
                         <td>{{ ucfirst($user->role) }}</td>
                         <td class="text-center">
-                            <button class="btn btn-primary btn-sm">EDIT</button>
-                            <button class="btn btn-danger btn-sm">HAPUS</button>
+                            <!-- Tombol Edit -->
+                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-sm">EDIT</a>
+
+                            <!-- Tombol Hapus -->
+                            <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">HAPUS</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

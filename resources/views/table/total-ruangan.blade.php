@@ -19,6 +19,7 @@
                     <th>ROOM ID</th>
                     <th>GEDUNG</th>
                     <th>NAMA RUANGAN</th>
+                    <th>KAPASITAS</th>
                     <th>DESKRIPSI</th>
                     <th>AKSI</th>
                 </tr>
@@ -29,10 +30,20 @@
                         <td>{{ $ruangan->id }}</td>
                         <td>{{ $ruangan->gedung }}</td>
                         <td>{{ $ruangan->nama }}</td>
+                        <td>{{ $ruangan->kapasitas }}</td>
                         <td>{{ $ruangan->deskripsi ?? '-' }}</td>
                         <td class="text-center">
-                            <button class="btn btn-primary btn-sm">EDIT</button>
-                            <button class="btn btn-danger btn-sm">HAPUS</button>
+                            <!-- Tombol Edit -->
+                            <a href="{{ route('rooms.edit', $ruangan->id) }}" class="btn btn-primary btn-sm">EDIT</a>
+
+                            <!-- Tombol Hapus -->
+                            <form action="{{ route('rooms.destroy', $ruangan->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus ruangan ini?')">HAPUS</button>
+                            </form>
                         </td>
                     </tr>
                 @empty
@@ -43,4 +54,3 @@
             </tbody>
         </table>
     </div>
-    

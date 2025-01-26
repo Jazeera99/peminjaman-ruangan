@@ -19,10 +19,10 @@
               <a class="nav-link text-white" href="/list/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link text-white" href="/admin/user"><i class="fas fa-user me-2"></i>Manage User</a>
+              <a class="nav-link text-white" href="{{ route('user.table') }}"><i class="fas fa-user me-2"></i>Manage User</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="/admin/ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
+            <a class="nav-link text-white" href="{{ route('rooms.table') }}"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
           </li>
           <li class="nav-item">
               <!-- Form logout -->
