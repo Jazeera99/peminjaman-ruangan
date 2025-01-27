@@ -5,10 +5,16 @@
             <a class="btn btn-primary text-white" href="/form/form-tambah-user">Tambah User</a>
         </div>
         <div>
-            <button class="btn btn-success me-2">Unduh Excel</button>
-            <button class="btn btn-danger">Unduh PDF</button>
+            @include('laporan.buat-laporan')
         </div>
     </div>
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Berhasil!</strong> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     <!-- Tabel -->
     <div class="table-responsive">

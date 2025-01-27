@@ -1,3 +1,5 @@
+PEMINJAMAN MODEL
+
 <?php
 
 namespace App\Models;
@@ -26,6 +28,7 @@ class Peminjaman extends Model
         'jumlah_peserta',
         'keterangan',
         'nomor_Whatsapp',
+        'status',
     ];
     public function room()
     {

@@ -3,6 +3,14 @@
 @section('title', 'User Dashboard')
 
 @section('content')
-  <h1>User Dashboard</h1>
-  <p>Welcome to the User Dashboard page.</p>
+<div class="container">
+  <div class="">
+    @include('table.notifikasi')
+  </div>
+</div>
+<div class="container">
+  <div class="">
+    @include('table.histori-peminjaman')
+  </div>
+</div>
 @endsection

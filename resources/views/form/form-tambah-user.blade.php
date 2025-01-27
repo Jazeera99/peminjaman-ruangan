@@ -3,6 +3,19 @@
 @section('content')
     <div class="row justify-content-center mt-1">
         <div class="col-md-4">
+            @if (session('success'))
+                <!-- Pesan Sukses -->
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Berhasil!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <!-- Tombol Kembali ke Halaman Manage User -->
+                <div class="text-center mb-3">
+                    <a href="{{ route('user.table') }}" class="btn btn-success">Kembali</a>
+                </div>
+            @endif
+
             <div class="card">
                 <h4 class="card-header text-center">{{ __('FORM TAMBAH USER') }}</h4>
                 <div class="card-body">

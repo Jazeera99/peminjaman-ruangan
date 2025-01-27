@@ -1,3 +1,5 @@
+BOOKING CONTROLLER
+
 <?php
 
 namespace App\Http\Controllers;
@@ -27,6 +29,23 @@ class BookingController extends Controller
         // Cari ruangan berdasarkan ID
         $ruangan = Ruangan::findOrFail($request->ruangan);
 
+        // Cek apakah ruangan sudah dibooking di waktu dan tanggal tertentu
+        $conflict = Peminjaman::where('room_id', $ruangan->id)
+            ->where('tanggal_kegiatan', $request->tanggal)
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
+                    ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
+                    ->orWhere(function ($subQuery) use ($request) {
+                        $subQuery->where('waktu_mulai', '<=', $request->waktu_mulai)
+                            ->where('waktu_selesai', '>=', $request->waktu_selesai);
+                    });
+            })
+            ->exists();
+
+        if ($conflict) {
+            return redirect()->back()->with('error', 'Ruangan telah dibooking di waktu dan tanggal tersebut!');
+        }
+
         // Tambahkan data ke tabel peminjaman
         Peminjaman::create([
             'tanggal_kegiatan' => $request->tanggal,
@@ -37,7 +56,7 @@ class BookingController extends Controller
             'nama_peminjam' => $request->nama,
             'nama_ormawa' => $request->peminjam,
             'nama_kegiatan' => $request->nama_kegiatan,
-            'jumlah_peserta' => $request->jumlah_kursi ?? 0,
+            'jumlah_peserta' => $request->jumlah_peserta,
             'keterangan' => $request->keterangan,
             'nomor_Whatsapp' => $request->nomor_Whatsapp,
         ]);

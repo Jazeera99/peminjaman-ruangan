@@ -1,3 +1,5 @@
+FORM BOOKING
+
 @extends('layouts.main')
 
 @section('content')
@@ -67,13 +69,12 @@
                             </div>
 
                             <!-- Form Tambahan untuk Sarpras -->
-                            <div id="sarpras-form" style="display: none;">
+                            
                                 <div class="mb-3">
-                                    <label for="jumlah_kursi" class="form-label">Jumlah Kursi</label>
-                                    <input type="number" id="jumlah_kursi" name="jumlah_kursi" class="form-control"
+                                    <label for="jumlah_peserta" class="form-label">Jumlah Kursi</label>
+                                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" class="form-control"
                                         min="1">
                                 </div>
-                            </div>
 
                             <!-- Keterangan -->
                             <div class="mb-3">
@@ -146,13 +147,13 @@
                 if (ruangan && tanggal && waktuMulai && waktuSelesai) {
                     try {
                         const response = await fetch(
-                            `/api/available-seats?ruangan=${ruangan}&tanggal=${tanggal}&waktu_mulai=${waktuMulai}&waktu_selesai=${waktuSelesai}`
+                            /api/available-seats?ruangan=${ruangan}&tanggal=${tanggal}&waktu_mulai=${waktuMulai}&waktu_selesai=${waktuSelesai}
                             );
                         const data = await response.json();
 
                         if (data.success) {
                             jumlahKursiInput.max = data.availableSeats;
-                            jumlahKursiInput.placeholder = `Max ${data.availableSeats} kursi`;
+                            jumlahKursiInput.placeholder = Max ${data.availableSeats} kursi;
                         } else {
                             alert(data.message);
                         }

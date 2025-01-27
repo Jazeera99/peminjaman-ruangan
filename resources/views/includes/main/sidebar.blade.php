@@ -47,9 +47,6 @@
               <a class="nav-link text-white" href="{{ route('booking') }}"><i class="fas fa-list me-2"></i>Form Peminjaman</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link text-white" href="/peminjaman/list"><i class="fas fa-list me-2"></i>List Peminjaman</a>
-          </li>
-          <li class="nav-item">
               <!-- Form logout -->
               <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                   @csrf
@@ -70,9 +67,6 @@
           </li>
           <li class="nav-item">
               <a class="nav-link text-white" href="/baak/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="/list/data-user"><i class="fas fa-user me-2"></i>Manage User</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" href="/list/data-ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
@@ -100,9 +94,6 @@
               <a class="nav-link text-white" href="/sarpras/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="/list/data-user"><i class="fas fa-user me-2"></i>Manage User</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link text-white" href="/list/data-ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
           </li> 
           <li class="nav-item">
@@ -118,6 +109,30 @@
 
   </ul>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("sidebar");
+        const toggleButton = document.getElementById("toggleSidebar");
+        const mainContent = document.getElementById("mainContent");
+
+        // Default: sidebar ditampilkan
+        let sidebarVisible = true;
+
+        toggleButton.addEventListener("click", function () {
+            if (sidebarVisible) {
+                // Sembunyikan sidebar
+                sidebar.style.transform = "translateX(-250px)";
+                mainContent.style.marginLeft = "0";
+            } else {
+                // Tampilkan sidebar
+                sidebar.style.transform = "translateX(0)";
+                mainContent.style.marginLeft = "250px";
+            }
+            sidebarVisible = !sidebarVisible; // Toggle status
+        });
+    });
+</script>
 
 
 

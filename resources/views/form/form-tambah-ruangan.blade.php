@@ -4,11 +4,23 @@
     <!-- Form Tambah Ruangan -->
     <div class="row justify-content-center mt-1">
         <div class="col-md-4">
+            @if (session('success'))
+                <!-- Pesan Sukses -->
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Berhasil!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <!-- Tombol Kembali ke Halaman Manage Ruangan -->
+                <div class="text-center mb-3">
+                    <a href="{{ route('rooms.table') }}" class="btn btn-success">Kembali</a>
+                </div>
+            @endif
             <div class="card">
                 <h4 class="card-header text-center">{{ __('FORM TAMBAH RUANGAN') }}</h4>
                 <div class="card-body">
                     <!-- Form Tambah Ruangan -->
-                    <form action="{{ route('rooms.store') }}" method="POST">
+                    <form action="{{ route('rooms.store') }}" method="POST" id="formTambahRuangan">
                         @csrf
                         <div class="mb-3">
                             <label for="gedung" class="gedung">Gedung</label>
@@ -44,4 +56,15 @@
             </div>
         </div>
     </div>
+    <script>
+        // JavaScript untuk validasi tambahan
+        document.getElementById('formTambahRuangan').addEventListener('submit', function(event) {
+            const form = this;
+            if (!form.checkValidity()) {
+                event.preventDefault(); // Mencegah pengiriman jika form tidak valid
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated'); // Tambahkan kelas untuk styling validasi
+        });
+    </script>
 @endsection

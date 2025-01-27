@@ -72,6 +72,21 @@
             align-items: center;
         }
 
+        .form-container {
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .close-button {
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+        }
+
         .footer-left {
             text-align: left;
         }
