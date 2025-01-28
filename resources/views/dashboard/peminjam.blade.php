@@ -10,7 +10,7 @@
 </div>
 <div class="container">
   <div class="">
-    @include('table.histori-peminjaman')
+    @include('table.histori-peminjaman', ['peminjamanRuangans' => $peminjamanRuangans])
   </div>
 </div>
 @endsection

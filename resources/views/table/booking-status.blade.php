@@ -88,7 +88,7 @@
                 @foreach ($peminjamanRuangans as $peminjaman)
                     <tr>
                         <td>{{ $peminjaman->id }}</td>
-                        <td>{{ $peminjaman->tanggal_kegiatan }}</td>
+                        <td>{{ $peminjaman->tanggal_kegiatan}}</td>
                         <td>{{ $peminjaman->waktu_mulai }}</td>
                         <td>{{ $peminjaman->waktu_selesai }}</td>
                         <td>{{ $peminjaman->room->nama ?? '-' }}</td>
@@ -194,4 +194,3 @@
         });
     </script>
 </div>
-@endsection

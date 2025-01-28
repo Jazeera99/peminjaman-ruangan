@@ -1,5 +1,3 @@
-PEMINJAMAN MODEL
-
 <?php
 
 namespace App\Models;
@@ -23,6 +21,7 @@ class Peminjaman extends Model
         'room_id',
         'nama_ruangan',
         'nama_peminjam',
+        'user_id', // Tambahkan user_id
         'nama_ormawa',
         'nama_kegiatan',
         'jumlah_peserta',

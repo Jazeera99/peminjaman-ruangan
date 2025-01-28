@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use App\Models\Ruangan;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashBoardController extends Controller
 {
@@ -23,8 +26,25 @@ class DashBoardController extends Controller
             abort(404); // Tampilkan error 404 jika role tidak valid
         }
 
-        return view($views[$role]);
+        // Data histori peminjaman (hanya untuk peminjam)
+        $peminjamanRuangans = [];
+        if ($role === 'peminjam') {
+            $peminjamanRuangans = Peminjaman::with(['room', 'user'])
+                ->where('user_id', Auth::id()) // Ambil data berdasarkan user yang login
+                ->orderBy('tanggal_kegiatan', 'desc') // Gunakan 'tanggal_kegiatan'
+                ->get();
+        }
+
+        // Data ruangan tidak tersedia (berdasarkan tanggal login)
+        $tanggalHariIni = Carbon::today(); // Tanggal hari ini
+        $ruanganTidakTersedia = Peminjaman::with('room') // Eager load relasi 'room'
+            ->whereDate('tanggal_kegiatan', $tanggalHariIni) // Filter ruangan yang tidak tersedia pada hari ini
+            ->where('status', '!=', 'disetujui') // Hanya ambil ruangan dengan status selain 'disetujui'
+            ->get();
+
+        return view($views[$role], compact('peminjamanRuangans', 'ruanganTidakTersedia'));
     }
+
 
 
     public function KalendarReservasi($role)
@@ -60,7 +80,7 @@ class DashBoardController extends Controller
     {
         $ruangans = Ruangan::all();
 
-        return view('list.data-ruangan', compact('ruangans') );
+        return view('list.data-ruangan', compact('ruangans'));
     }
     public function showlistuser()
     {

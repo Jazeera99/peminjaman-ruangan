@@ -1,9 +1,9 @@
 <!-- Tabel -->
-<div class="table-auto">
-    <h4 style="text-align: center;">RIWAYAT EPEMINJAMAN</h4>
+<div class="table-responsive">
+    <h4 style="text-align: center;">RIWAYAT PEMINJAMAN</h4>
     <table class="table table-bordered table-hover table-status">
         <thead class="table-primary text-center">
-            <tr style="text-align: center; vertical-align: middle;">
+            <tr>
                 <th>TANGGAL</th>
                 <th>WAKTU MULAI</th>
                 <th>WAKTU SELESAI</th>
@@ -18,32 +18,43 @@
             </tr>
         </thead>
         <tbody>
-            {{-- @foreach ($peminjamanRuangans as $peminjaman)
+            @forelse ($peminjamanRuangans as $peminjaman)
                 <tr>
-                    <td>{{ $peminjaman->tanggal_kegiatan }}</td>
+                    <td>{{ $peminjaman->tanggal }}</td>
                     <td>{{ $peminjaman->waktu_mulai }}</td>
                     <td>{{ $peminjaman->waktu_selesai }}</td>
                     <td>{{ $peminjaman->room->nama ?? '-' }}</td>
-                    <td>{{ $peminjaman->user->nama ?? '-' }}</td>
+                    <td>{{ $peminjaman->nama }}</td>
                     <td>{{ $peminjaman->nama_kegiatan }}</td>
                     <td>{{ $peminjaman->nomor_Whatsapp }}</td>
-                    <td>{{ $peminjaman->keterangan }}</td>
-                    <td>{{ $peminjaman->pas_foto }}</td>
-                    <td>{{ $peminjaman->file_tambahan }}</td> 
+                    <td>{{ $peminjaman->keterangan ?? '-' }}</td>
+                    <td>
+                        @if ($peminjaman->pas_foto)
+                            <a href="{{ asset('storage/' . $peminjaman->pas_foto) }}" target="_blank">Lihat Pas Foto</a>
+                        @else
+                            Tidak Ada
+                        @endif
+                    </td>
+                    <td>
+                        @if ($peminjaman->file)
+                            <a href="{{ asset('storage/' . $peminjaman->file) }}" target="_blank">Lihat File</a>
+                        @else
+                            Tidak Ada
+                        @endif
+                    </td>
                     <td class="text-center">
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select id="status" name="status" class="form-control" required>
-                                <option value="disetujui">DISETUJUI</option>
-                                <option value="ditolak">DITOLAK</option>
-                            </select>
-                        </div>
+                        {{ $peminjaman->status }}
                     </td>
                 </tr>
-            @endforeach --}}
+            @empty
+                <tr>
+                    <td colspan="11" class="text-center">Tidak ada riwayat peminjaman.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -63,6 +74,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Kirim</button>
                 </div>
             </form>
         </div>
@@ -70,14 +82,13 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const statusSelects = document.querySelectorAll('.status-select');
         const reasonModal = new bootstrap.Modal(document.getElementById('reasonModal'));
         const peminjamanIdInput = document.getElementById('peminjamanId');
-        const reasonForm = document.getElementById('reasonForm');
 
         statusSelects.forEach(select => {
-            select.addEventListener('change', function () {
+            select.addEventListener('change', function() {
                 const selectedValue = this.value;
                 const peminjamanId = this.getAttribute('data-id');
 
@@ -86,10 +97,30 @@
                     peminjamanIdInput.value = peminjamanId;
                     // Tampilkan modal
                     reasonModal.show();
+                } else {
+                    // Simpan status langsung jika bukan "ditolak"
+                    fetch(`/peminjaman/update-status/${peminjamanId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                status: selectedValue
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Status berhasil diperbarui!');
+                            } else {
+                                alert('Gagal memperbarui status.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
                 }
             });
         });
-
     });
 </script>
-

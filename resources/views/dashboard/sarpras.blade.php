@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'BAAK Dashboard')
+@section('title', 'SarPras Dashboard')
 
 @section('content')
 <div class="container">

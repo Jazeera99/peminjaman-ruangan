@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama', 100);
             $table->integer('kapasitas');
             $table->text('deskripsi')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

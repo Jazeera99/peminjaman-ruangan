@@ -4,11 +4,12 @@
         <div class="text-center">
             <a class="btn btn-primary text-white" href="/addruangan">Tambah Ruangan</a>
         </div>
+
         <div>
             <div class="container">
                 <button id="showFormButton" class="btn btn-success mb-3">Buat Laporan</button>
-                <div class="form-container" id="formContainer">
-                    <button type="button" id="hideFormButton" class="close-button">&times;</button> 
+                <div class="form-container" id="formContainer" style="display: none;">
+                    <button type="button" id="hideFormButton" class="close-button">&times;</button>
                     <form action="" method="GET">
                         @csrf
                         <div class="row">
@@ -20,10 +21,11 @@
                                     <option value="1">Januari</option>
                                     <option value="2">Februari</option>
                                     <option value="3">Maret</option>
+                                    <option value="4">April</option>
                                     <!-- Tambahkan opsi bulan lainnya -->
                                 </select>
                             </div>
-        
+
                             <!-- Dropdown Tahun -->
                             <div class="col-md-6 mb-3">
                                 <label for="year" class="form-label">Pilih Tahun</label>
@@ -43,7 +45,7 @@
                     </form>
                 </div>
             </div>
-        
+
             <script>
                 document.getElementById('showFormButton').addEventListener('click', function() {
                     document.getElementById('formContainer').style.display = 'block';
@@ -57,12 +59,10 @@
             </script>
         </div>
     </div>
-        </div>
-    </div>
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Berhasil!</strong> {{ session('success') }}
+            <strong>Berhasil!</strong> {{ session('success') }} 
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
@@ -92,10 +92,10 @@
                         <td class="text-center">
                             <!-- Tombol Edit -->
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#editRuanganModal{{ $ruangans->id }}">EDIT</button>
+                            data-bs-target="#editRuanganModal{{ $ruangan->id }}">EDIT</button>
 
                             <!-- Tombol Hapus -->
-                            <form action="{{ route('rooms.destroy', $ruangans->id) }}" method="POST"
+                            <form action="{{ route('rooms.destroy', $ruangan->id) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
@@ -105,19 +105,15 @@
                         </td>
                         <td>{{ $ruangan->status }}</td>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center">Data ruangan belum tersedia.</td>
-                    </tr>
                     <!-- Modal Edit -->
-                    <div class="modal fade" id="editRuanganModal{{ $ruangans->id }}" tabindex="-1" aria-labelledby="editRuangansModalLabel{{ $ruangans->id }}" aria-hidden="true">
+                    <div class="modal fade" id="editRuanganModal{{ $ruangan->id }}" tabindex="-1" aria-labelledby="editRuangansModalLabel{{ $ruangan->id }}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="editRuanganModalLabel{{ $ruangans->id }}">Edit Ruangan</h5>
+                                    <h5 class="modal-title" id="editRuanganModalLabel{{ $ruangan->id }}">Edit Ruangan</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form action="{{ route('rooms.update', $ruangans->id) }}" method="POST">
+                                <form action="{{ route('rooms.update', $ruangan->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="modal-body">
@@ -126,7 +122,7 @@
                                             <select id="gedung" name="gedung" class="form-control" required>
                                                 <option value="">-- Pilih Gedung --</option>
                                                 @foreach (\App\Models\Ruangan::gedungOptions() as $value => $label)
-                                                    <option value="{{ $value }}" {{ $ruangans->gedung == $value ? 'selected' : '' }}>
+                                                    <option value="{{ $value }}" {{ $ruangan->gedung == $value ? 'selected' : '' }}>
                                                         {{ $label }}
                                                     </option>
                                                 @endforeach
@@ -135,38 +131,41 @@
                                         <div class="mb-3 mt-3">
                                             <label for="nama_ruangan" class="form-label">Nama Ruangan</label>
                                             <input type="text" id="nama" name="nama" class="form-control"
-                                                value="{{ $ruangans->nama }}" placeholder="Masukkan nama ruangan" required>
+                                                value="{{ $ruangan->nama }}" placeholder="Masukkan nama ruangan" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="kapasitas" class="form-label">Kapasitas</label>
                                             <input type="number" id="kapasitas" name="kapasitas" class="form-control" 
-                                                   value="{{ $ruangans->kapasitas }}" placeholder="Masukkan kapasitas ruangan" required>
+                                                   value="{{ $ruangan->kapasitas }}" placeholder="Masukkan kapasitas ruangan" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="deskripsi" class="deskripsi">Deskripsi</label>
                                             <input type="text" id="deskripsi" name="deskripsi" class="form-control"
-                                                value="{{ $ruangans->deskripsi }}" placeholder="Masukkan deskripsi ruangan" required>
+                                                value="{{ $ruangan->deskripsi }}" placeholder="Masukkan deskripsi ruangan" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="status" class="form-label">Status</label>
                                             <select id="status" name="status" class="form-control" required>
-                                                <option value="tersedia">Tersedia</option>
-                                                <option value="tidak tersedia">Tidak Tersedia</option>
+                                                <option value="tersedia" {{ $ruangan->status == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
+                                                <option value="tidak tersedia" {{ $ruangan->status == 'tidak tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
                                             </select>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </div>                
-                    <!-- End Modal Edit -->
+                    </div>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">Data ruangan belum tersedia.</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 </div>
-@endsection
+

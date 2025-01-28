@@ -15,22 +15,27 @@ class PeminjamanController extends Controller
     {
         // Dapatkan role dari pengguna yang sedang login
         $role = Auth::user()->role;
-
-        // Ambil data peminjaman berdasarkan role, dengan relasi ke 'room' dan 'user'
-        $peminjamanRuangans = Peminjaman::with(['room', 'user']) // Eager load relasi ke 'room' dan 'user'
+        $peminjamanRuangans = Peminjaman::with(['room', 'user'])
             ->when($role == 'sarpras', function ($query) {
-                // Sarpras hanya bisa melihat ruangan FLTB Anggrek dan Auditorium
                 return $query->whereHas('room', function ($query) {
-                    $query->whereIn('gedung', ['Anggrek', 'Auditorium']);
+                    $query->whereIn('gedung', ['GOR','FLTB','Anggrek', 'Auditorium']);
                 });
             })
             ->when($role == 'baak', function ($query) {
-                // BAAK hanya bisa melihat ruangan Gedung Pendidikan
                 return $query->whereHas('room', function ($query) {
                     $query->where('gedung', 'Pendidikan');
                 });
             })
+            ->when($role == 'admin', function ($query) {
+                // Admin dapat melihat semua data, tanpa filter
+                return $query;
+            })
+            ->when($role == 'peminjam', function ($query) {
+                // Peminjam hanya melihat histori peminjamannya sendiri
+                return $query->where('user_id', Auth::id());
+            })
             ->get();
+
 
         return view('list.list-booking', compact('peminjamanRuangans'));
     }

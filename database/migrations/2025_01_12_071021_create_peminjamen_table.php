@@ -1,5 +1,3 @@
-PEMINJAMAN  MIGRATION
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -21,11 +19,14 @@ return new class extends Migration
             $table->unsignedBigInteger('room_id'); // Kolom RUANGAN
             $table->string('nama_ruangan', 100); // Kolom NAMA RUANGAN (ditambahkan)
             $table->string('nama_peminjam', 100); // Kolom PEMINJAM
-            $table->string('nama_ormawa', 100); // Kolom ORGANISASI
+            $table->unsignedBigInteger('user_id'); // Kolom ORGANISASI
+            $table->string('nama_ormawa', 100); // Kolom ORMAWA
             $table->string('nama_kegiatan', 100); // Kolom NAMA KEGIATAN
             $table->integer('jumlah_peserta'); // Kolom JUMLAH PESERTA
             $table->string('keterangan')->nullable(); // Kolom PERALATAN
             $table->string('nomor_Whatsapp', 15); // Kolom NO WHATSAPP
+            $table->string('pas_foto', 255)->nullable(); // Kolom PAS FOTO
+            $table->string('file', 255); // Kolom FILE
             $table->string('status', 20)->default('PENDING'); // Kolom STATUS
             $table->timestamps(); // Kolom untuk created_at dan updated_at
         });

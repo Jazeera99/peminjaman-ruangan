@@ -1,11 +1,21 @@
-FORM BOOKING
-
 @extends('layouts.main')
 
 @section('content')
     <div class="container mt-1">
         <div class="row justify-content-center">
             <div class="col-md-5">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Berhasil!</strong> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong></strong> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="card">
                     <h4 class="card-header text-center">{{ __('FORM PEMINJAMAN RUANGAN') }}</h4>
                     <div class="card-body">
@@ -14,22 +24,23 @@ FORM BOOKING
 
                             <!-- Nama Lengkap -->
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Nama Lengkap</label>
-                                <input type="text" id="nama" name="nama" class="form-control"
+                                <label for="nama_peminjam" class="form-label">Nama Lengkap</label>
+                                <input type="text" id="nama_peminjam" name="nama_peminjam" class="form-control"
                                     placeholder="Masukkan nama Anda" required>
                             </div>
 
+                            <!-- Nomor WhatsApp -->
                             <div class="mb-3">
-                                <label for="nomor_Whatsapp" class="form-label">No WhatsApp</label>
-                                <input type="nomor_Whatsapp" id="nomor_Whatsapp" name="nomor_Whatsapp" class="form-control"
-                                    placeholder="Masukkan nomor whatsapp Anda" required>
+                                <label for="nomor_Whatsapp" class="form-label">Nomor WhatsApp</label>
+                                <input type="text" id="nomor_Whatsapp" name="nomor_Whatsapp" class="form-control"
+                                    placeholder="Masukkan nomor WhatsApp Anda" required>
                             </div>
 
                             <!-- Nama Ruangan dan Tanggal -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="ruangan" class="form-label">Nama Ruangan</label>
-                                    <select id="ruangan" name="ruangan" class="form-control" required>
+                                    <label for="room_id" class="form-label">Nama Ruangan</label>
+                                    <select id="room_id" name="room_id" class="form-control" required>
                                         <option value="">-- Pilih Ruangan --</option>
                                         @foreach ($ruangans as $ruangan)
                                             <option value="{{ $ruangan->id }}">{{ $ruangan->nama }}</option>
@@ -37,8 +48,9 @@ FORM BOOKING
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="tanggal" class="form-label">Tanggal Kegiatan</label>
-                                    <input type="date" id="tanggal" name="tanggal" class="form-control" required>
+                                    <label for="tanggal_kegiatan" class="form-label">Tanggal Kegiatan</label>
+                                    <input type="date" id="tanggal_kegiatan" name="tanggal_kegiatan" class="form-control"
+                                        required>
                                 </div>
                             </div>
 
@@ -55,26 +67,18 @@ FORM BOOKING
                                 </div>
                             </div>
 
-                            <!-- Organisasi -->
-                            <div class="mb-3">
-                                <label for="peminjam" class="form-label">Peminjam (Himatif/dll)</label>
-                                <input type="text" id="peminjam" name="peminjam" class="form-control"
-                                    placeholder="Organisasi Anda" required>
-                            </div>
-
                             <!-- Nama Kegiatan -->
                             <div class="mb-3">
                                 <label for="nama_kegiatan" class="form-label">Nama Kegiatan</label>
                                 <input type="text" id="nama_kegiatan" name="nama_kegiatan" class="form-control" required>
                             </div>
 
-                            <!-- Form Tambahan untuk Sarpras -->
-                            
-                                <div class="mb-3">
-                                    <label for="jumlah_peserta" class="form-label">Jumlah Kursi</label>
-                                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" class="form-control"
-                                        min="1">
-                                </div>
+                            <!-- Jumlah Peserta -->
+                            <div class="mb-3">
+                                <label for="jumlah_peserta" class="form-label">Jumlah Peserta</label>
+                                <input type="number" id="jumlah_peserta" name="jumlah_peserta" class="form-control"
+                                    min="1" required>
+                            </div>
 
                             <!-- Keterangan -->
                             <div class="mb-3">
@@ -82,17 +86,17 @@ FORM BOOKING
                                 <textarea id="keterangan" name="keterangan" class="form-control"></textarea>
                             </div>
 
-                            {{-- Pas Foto --}}
+                            <!-- Pas Foto -->
                             <div class="mb-3">
-                                <label for="pasFoto">Pas Foto</label>
+                                <label for="pasFoto" class="form-label">Pas Foto</label>
                                 <input type="file" name="pasFoto" id="pasFoto" class="form-control">
-
                             </div>
 
-                            <!-- Upload Surat -->
+                            <!-- Surat Permohonan -->
                             <div class="mb-3">
-                                <label for="file">Surat Permohonan (wajib) dan Lembar Disposisi (Jika Ada)</label>
-                                <input type="file" name="file" id="file" class="form-control">
+                                <label for="file" class="form-label">Surat Permohonan (Wajib) dan Lembar Disposisi (Jika
+                                    Ada)</label>
+                                <input type="file" name="file" id="file" class="form-control" required>
                             </div>
 
                             <!-- Submit Button -->
@@ -100,6 +104,7 @@ FORM BOOKING
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -147,13 +152,24 @@ FORM BOOKING
                 if (ruangan && tanggal && waktuMulai && waktuSelesai) {
                     try {
                         const response = await fetch(
-                            /api/available-seats?ruangan=${ruangan}&tanggal=${tanggal}&waktu_mulai=${waktuMulai}&waktu_selesai=${waktuSelesai}
-                            );
+                            /api/available - seats ? ruangan = $ {
+                                ruangan
+                            } & tanggal = $ {
+                                tanggal
+                            } & waktu_mulai = $ {
+                                waktuMulai
+                            } & waktu_selesai = $ {
+                                waktuSelesai
+                            }
+                        );
                         const data = await response.json();
 
                         if (data.success) {
                             jumlahKursiInput.max = data.availableSeats;
-                            jumlahKursiInput.placeholder = Max ${data.availableSeats} kursi;
+                            jumlahKursiInput.placeholder = Max $ {
+                                data.availableSeats
+                            }
+                            kursi;
                         } else {
                             alert(data.message);
                         }
