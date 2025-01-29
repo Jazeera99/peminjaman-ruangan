@@ -20,7 +20,7 @@
         <tbody>
             @forelse ($peminjamanRuangans as $peminjaman)
                 <tr>
-                    <td>{{ $peminjaman->tanggal }}</td>
+                    <td>{{ $peminjaman->tanggal_kegiatan }}</td>
                     <td>{{ $peminjaman->waktu_mulai }}</td>
                     <td>{{ $peminjaman->waktu_selesai }}</td>
                     <td>{{ $peminjaman->room->nama ?? '-' }}</td>
