@@ -27,6 +27,8 @@ class Peminjaman extends Model
         'jumlah_peserta',
         'keterangan',
         'nomor_Whatsapp',
+        'pas_foto',
+        'file',
         'status',
     ];
     public function room()

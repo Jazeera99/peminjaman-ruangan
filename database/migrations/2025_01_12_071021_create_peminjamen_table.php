@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('keterangan')->nullable(); // Kolom PERALATAN
             $table->string('nomor_Whatsapp', 15); // Kolom NO WHATSAPP
             $table->string('pas_foto', 255)->nullable(); // Kolom PAS FOTO
-            $table->string('file', 255); // Kolom FILE
+            $table->string('file', 255)->nullable(); // Kolom FILE
             $table->string('status', 20)->default('PENDING'); // Kolom STATUS
             $table->timestamps(); // Kolom untuk created_at dan updated_at
         });
