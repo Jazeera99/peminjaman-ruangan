@@ -3,7 +3,7 @@
         <img src="../images/logo-gedung-anggrek.png" alt="BAAK" class="mb-2" style="width: 125px; height: auto; max-width: 100%; object-fit: contain; margin-right: 20px;">
         <div>
             <h5 class="mb-0">ANGGREK</h5>
-            <h1 class="mt-2">3</h1>
+            <h1 class="mt-2">{{ $anggrekRuangan }}</h1>
         </div>
     </div>
 </div>

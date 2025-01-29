@@ -42,6 +42,8 @@ Route::delete('/rooms/{id}', [RuanganController::class, 'destroy'])->name('rooms
 // Manajemen Booking
 Route::get('/dashboard/booking', [DashboardController::class, 'ShowFormBooking'])->name('booking');
 Route::post('/submit-booking', [BookingController::class, 'store']);
+Route::post('/peminjaman/status/{id}', [PeminjamanController::class, 'updateStatus'])->name('peminjaman.status');
+
 
 // Manajemen User
 Route::get('/user/table/user-baak', [DashboardController::class, 'tableUserBaak']);

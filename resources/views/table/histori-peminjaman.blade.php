@@ -77,6 +77,31 @@
     </table>
 </div>
 
+<!-- Table untuk menampilkan data yang ditolak -->
+@if ($peminjamanRuangans->where('status', 'ditolak')->isNotEmpty())
+    <div class="table-responsive mt-4">
+        <h4 style="text-align: center;">PEMINJAMAN DITOLAK</h4>
+        <table class="table table-bordered table-hover table-danger">
+            <thead class="text-center">
+                <tr>
+                    <th>TANGGAL</th>
+                    <th>NAMA KEGIATAN</th>
+                    <th>ALASAN DITOLAK</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($peminjamanRuangans->where('status', 'ditolak') as $peminjaman)
+                    <tr class="text-center">
+                        <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_kegiatan)->format('d/m/Y') }}</td>
+                        <td>{{ $peminjaman->nama_kegiatan }}</td>
+                        <td>{{ $peminjaman->alasan_ditolak ?? 'Tidak ada alasan' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@endif
+
 <!-- Modal -->
 <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
     <div class="modal-dialog">

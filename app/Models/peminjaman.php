@@ -29,6 +29,7 @@ class Peminjaman extends Model
         'nomor_Whatsapp',
         'pas_foto',
         'file',
+        'alasan_ditolak',
         'status',
     ];
     public function room()

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('nomor_Whatsapp', 15); // Kolom NO WHATSAPP
             $table->string('pas_foto', 255)->nullable(); // Kolom PAS FOTO
             $table->string('file', 255)->nullable(); // Kolom FILE
+            $table->text('alasan_ditolak')->nullable(); // Kolom untuk alasan penolakan
             $table->string('status', 20)->default('PENDING'); // Kolom STATUS
             $table->timestamps(); // Kolom untuk created_at dan updated_at
         });

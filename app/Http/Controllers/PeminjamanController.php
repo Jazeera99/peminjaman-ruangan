@@ -138,7 +138,7 @@ class PeminjamanController extends Controller
 
             $html .= '<tr>
                 <td>' . $data->id . '</td>
-                <td>' . $data->tanggal_kegiatan . '</td>
+                <td>' . $data->tanggal_kegiatan . '</td>    
                 <td>' . $data->waktu_mulai . '</td>
                 <td>' . $data->waktu_selesai . '</td>
                 <td>' . ($data->room->nama ?? '-') . '</td>
@@ -165,6 +165,7 @@ class PeminjamanController extends Controller
     public function getEvents()
     {
         $events = Peminjaman::select('id', 'nama_ruangan', 'nama_kegiatan', 'tanggal_kegiatan', 'waktu_mulai', 'waktu_selesai')
+            ->where('status', 'disetujui')  // Menambahkan kondisi status "disetujui"
             ->get()
             ->map(function ($event) {
                 return [
@@ -183,10 +184,12 @@ class PeminjamanController extends Controller
     }
 
 
+
     public function getEventsByDate(Request $request)
     {
         if ($request->has('date')) {
             $events = Peminjaman::whereDate('tanggal_kegiatan', $request->date)
+                ->where('status', 'disetujui')  // Menambahkan kondisi status "disetujui"
                 ->select('nama_ruangan', 'nama_kegiatan', 'nama_ormawa', 'waktu_mulai', 'waktu_selesai')
                 ->get();
 
@@ -194,5 +197,29 @@ class PeminjamanController extends Controller
         }
 
         return response()->json([]);
+    }
+
+
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Cari peminjaman berdasarkan ID
+        $peminjaman = Peminjaman::findOrFail($id);
+
+        // Update status peminjaman
+        $peminjaman->status = $request->input('status');
+
+        // Jika status ditolak, simpan alasan
+        if ($request->input('status') == 'ditolak') {
+            $peminjaman->alasan_ditolak = $request->input('alasan_ditolak');
+        } else {
+            // Kosongkan alasan jika status bukan ditolak
+            $peminjaman->alasan_ditolak = null;
+        }
+
+        $peminjaman->save();
+
+        // Redirect kembali ke halaman dengan pesan sukses
+        return redirect()->route('peminjaman.index')->with('success', 'Status peminjaman berhasil diperbarui.');
     }
 }

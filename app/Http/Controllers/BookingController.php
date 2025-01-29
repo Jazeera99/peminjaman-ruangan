@@ -23,6 +23,7 @@ class BookingController extends Controller
             'nomor_Whatsapp' => 'required|string|max:15',
             'file' => 'nullable|image|mimes:pdf,doc,docx,jpeg,jpg,png|max:2048',
             'pasFoto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'alasan_ditolak' => 'nullable|string|max:255',
         ]);
 
         // Cari Ruangan
@@ -66,6 +67,7 @@ class BookingController extends Controller
             'pas_foto' => $pasFotoPath,
             'file' => $filePath,
             'status' => 'PENDING',
+            'alasan_ditolak' => $request->alasan_ditolak,
         ]);
 
         return redirect()->back()->with('success', 'Peminjaman berhasil ditambahkan!');
