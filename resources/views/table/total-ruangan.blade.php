@@ -62,110 +62,157 @@
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Berhasil!</strong> {{ session('success') }} 
+            <strong>Berhasil!</strong> {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    <!-- Tabel -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-status">
-            <thead class="table-primary text-center">
-                <tr style="text-align: center; vertical-align: middle;">
-                    <th>ROOM ID</th>
-                    <th>GEDUNG</th>
-                    <th>NAMA RUANGAN</th>
-                    <th>KAPASITAS</th>
-                    <th>DESKRIPSI</th>
-                    <th>AKSI</th>
-                    <th>STATUS</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($ruangans as $ruangan)
-                    <tr>
-                        <td>{{ $ruangan->id }}</td>
-                        <td>{{ $ruangan->gedung }}</td>
-                        <td>{{ $ruangan->nama }}</td>
-                        <td>{{ $ruangan->kapasitas }}</td>
-                        <td>{{ $ruangan->deskripsi ?? '-' }}</td>
-                        <td class="text-center">
-                            <!-- Tombol Edit -->
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#editRuanganModal{{ $ruangan->id }}">EDIT</button>
+    <table class="table table-bordered table-hover table-status">
+        <thead class="table-primary text-center">
+            <tr>
+                <th>ID</th>
+                <th>GEDUNG</th>
+                <th>NAMA RUANGAN</th>
+                <th>KAPASITAS</th>
+                <th>DESKRIPSI</th>
+                <th>STATUS</th>
+                <th>AKSI</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($ruangans as $ruangan)
+                <tr>
+                    <td>{{ $ruangan->id }}</td>
+                    <td>{{ $ruangan->gedung }}</td>
+                    <td>{{ $ruangan->nama }}</td>
+                    <td>{{ $ruangan->kapasitas }}</td>
+                    <td>{{ $ruangan->deskripsi }}</td>
+                    <td>{{ ucfirst($ruangan->status) }}</td>
+                    <td>
+                        <!-- Tombol Edit -->
+                        <button class="btn btn-primary btn-sm editButton" data-id="{{ $ruangan->id }}"
+                            data-gedung="{{ $ruangan->gedung }}" data-nama="{{ $ruangan->nama }}"
+                            data-kapasitas="{{ $ruangan->kapasitas }}" data-deskripsi="{{ $ruangan->deskripsi }}"
+                            data-status="{{ $ruangan->status }}">
+                            EDIT
+                        </button>
 
-                            <!-- Tombol Hapus -->
-                            <form action="{{ route('rooms.destroy', $ruangan->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus ruangan ini?')">HAPUS</button>
-                            </form>
-                        </td>
-                        <td>{{ $ruangan->status }}</td>
-                    </tr>
-                    <!-- Modal Edit -->
-                    <div class="modal fade" id="editRuanganModal{{ $ruangan->id }}" tabindex="-1" aria-labelledby="editRuangansModalLabel{{ $ruangan->id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editRuanganModalLabel{{ $ruangan->id }}">Edit Ruangan</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="{{ route('rooms.update', $ruangan->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="gedung" class="gedung">Gedung</label>
-                                            <select id="gedung" name="gedung" class="form-control" required>
-                                                <option value="">-- Pilih Gedung --</option>
-                                                @foreach (\App\Models\Ruangan::gedungOptions() as $value => $label)
-                                                    <option value="{{ $value }}" {{ $ruangan->gedung == $value ? 'selected' : '' }}>
-                                                        {{ $label }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 mt-3">
-                                            <label for="nama_ruangan" class="form-label">Nama Ruangan</label>
-                                            <input type="text" id="nama" name="nama" class="form-control"
-                                                value="{{ $ruangan->nama }}" placeholder="Masukkan nama ruangan" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="kapasitas" class="form-label">Kapasitas</label>
-                                            <input type="number" id="kapasitas" name="kapasitas" class="form-control" 
-                                                   value="{{ $ruangan->kapasitas }}" placeholder="Masukkan kapasitas ruangan" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="deskripsi" class="deskripsi">Deskripsi</label>
-                                            <input type="text" id="deskripsi" name="deskripsi" class="form-control"
-                                                value="{{ $ruangan->deskripsi }}" placeholder="Masukkan deskripsi ruangan" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="status" class="form-label">Status</label>
-                                            <select id="status" name="status" class="form-control" required>
-                                                <option value="tersedia" {{ $ruangan->status == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                                <option value="tidak tersedia" {{ $ruangan->status == 'tidak tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
-                                            </select>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('rooms.destroy', $ruangan->id) }}" method="POST"
+                            style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus ruangan ini?')">HAPUS
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Ruangan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editRuanganForm" action="rooms.update">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <input type="hidden" id="ruangan_id" name="id">
+
+                        <div class="mb-3">
+                            <label for="gedung" class="form-label">Gedung</label>
+                            <select id="gedung" name="gedung" class="form-control">
+                                <option value="FLTB">FLTB</option>
+                                <option value="Pendidikan">Pendidikan</option>
+                                <option value="Anggrek">Anggrek</option>
+                                <option value="GOR">GOR</option>
+                                <option value="Auditorium">Auditorium</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nama_ruangan" class="form-label">Nama Ruangan</label>
+                            <input type="text" id="nama_ruangan" name="nama_ruangan" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="kapasitas" class="form-label">Kapasitas</label>
+                            <input type="number" id="kapasitas" name="kapasitas" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea id="deskripsi" name="deskripsi" class="form-control"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select id="status" name="status" class="form-control">
+                                <option value="tersedia">Tersedia</option>
+                                <option value="tidak tersedia">Tidak Tersedia</option>
+                            </select>
                         </div>
                     </div>
-                @empty
-                    <tr>
-                        <td colspan="7" class="text-center">Data ruangan belum tersedia.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let editModal = new bootstrap.Modal(document.getElementById('editModal'));
+
+            // Ketika tombol edit diklik, isi form dalam modal
+            document.querySelectorAll('.editButton').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.getElementById('ruangan_id').value = this.dataset.id;
+                    document.getElementById('gedung').value = this.dataset.gedung;
+                    document.getElementById('nama_ruangan').value = this.dataset.nama;
+                    document.getElementById('kapasitas').value = this.dataset.kapasitas;
+                    document.getElementById('deskripsi').value = this.dataset.deskripsi;
+                    document.getElementById('status').value = this.dataset.status;
+                    editModal.show();
+                });
+            });
+
+            // Form submit dengan AJAX
+            document.getElementById('editRuanganForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+                let id = document.getElementById('ruangan_id').value;
+
+                fetch(`/ruangan/update/${id}`, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Ruangan berhasil diperbarui!');
+                            editModal.hide();
+                            setTimeout(() => {
+                                location.reload();
+                            }, 500);
+                        } else {
+                            alert('Gagal memperbarui ruangan.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>

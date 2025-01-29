@@ -4,42 +4,64 @@
     <table class="table table-bordered table-hover table-status">
         <thead class="table-primary text-center">
             <tr>
+                <th>ID</th>
                 <th>TANGGAL</th>
                 <th>WAKTU MULAI</th>
                 <th>WAKTU SELESAI</th>
                 <th>RUANGAN</th>
                 <th>PEMINJAM</th>
+                <th>ORGANISASI</th>
                 <th>NAMA KEGIATAN</th>
                 <th>NO WHATSAPP</th>
                 <th>KETERANGAN</th>
                 <th>PAS FOTO</th>
-                <th>SURAT PERMOHONAN DAN SURAT DISPOSISI</th>
+                <th>SURAT PERMOHONAN</th>
                 <th>STATUS</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($peminjamanRuangans as $peminjaman)
                 <tr>
+                    <td>{{ $peminjaman->id }}</td>
                     <td>{{ $peminjaman->tanggal_kegiatan }}</td>
                     <td>{{ $peminjaman->waktu_mulai }}</td>
                     <td>{{ $peminjaman->waktu_selesai }}</td>
                     <td>{{ $peminjaman->room->nama ?? '-' }}</td>
-                    <td>{{ $peminjaman->nama }}</td>
+                    <td>{{ $peminjaman->nama_peminjam }}</td>
+                    <td>{{ $peminjaman->user->nama ?? '-' }}</td>
                     <td>{{ $peminjaman->nama_kegiatan }}</td>
                     <td>{{ $peminjaman->nomor_Whatsapp }}</td>
-                    <td>{{ $peminjaman->keterangan ?? '-' }}</td>
+                    <td>{{ $peminjaman->keterangan }}</td>
                     <td>
                         @if ($peminjaman->pas_foto)
-                            <a href="{{ asset('storage/' . $peminjaman->pas_foto) }}" target="_blank">Lihat Pas Foto</a>
+                            <img src="{{ asset('storage/' . $peminjaman->pas_foto) }}" alt="Pas Foto" width="100">
                         @else
-                            Tidak Ada
+                            -
                         @endif
                     </td>
                     <td>
                         @if ($peminjaman->file)
-                            <a href="{{ asset('storage/' . $peminjaman->file) }}" target="_blank">Lihat File</a>
+                            @php
+                                $fileExtension = pathinfo($peminjaman->file, PATHINFO_EXTENSION);
+                            @endphp
+
+                            @if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                                <!-- Jika file adalah gambar, tampilkan sebagai img -->
+                                <img src="{{ asset('storage/' . $peminjaman->file) }}" alt="Surat Permohonan"
+                                    width="50">
+                            @elseif ($fileExtension == 'pdf')
+                                <!-- Jika file adalah PDF, tampilkan dalam iframe -->
+                                <iframe src="{{ asset('storage/' . $peminjaman->file) }}" width="100"
+                                    height="100"></iframe>
+                            @else
+                                <!-- Jika file format lain, tampilkan link download -->
+                                <a href="{{ asset('storage/' . $peminjaman->file) }}" target="_blank"
+                                    class="btn btn-primary btn-sm">
+                                    Lihat File
+                                </a>
+                            @endif
                         @else
-                            Tidak Ada
+                            -
                         @endif
                     </td>
                     <td class="text-center">

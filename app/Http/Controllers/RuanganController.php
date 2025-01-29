@@ -4,31 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\ruangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RuanganController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function showlistruangan($role)
     {
-        //
+        $user = Auth::user();
+        $role = $user->role;
+
+        // Admin bisa melihat semua ruangan
+        if ($role === 'admin') {
+            $ruangans = Ruangan::all();
+        }
+        // Sarpras hanya bisa melihat ruangan dari gedung tertentu
+        elseif ($role === 'sarpras') {
+            $ruangans = Ruangan::whereIn('gedung', ['GOR', 'FLTB', 'Anggrek', 'Auditorium'])->get();
+        }
+        // BAAK hanya bisa melihat ruangan di gedung Pendidikan
+        elseif ($role === 'baak') {
+            $ruangans = Ruangan::where('gedung', 'Pendidikan')->get();
+        }
+        // Peminjam tidak seharusnya melihat daftar ruangan
+        else {
+            return abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        }
+
+        return view('list.data-ruangan', compact('ruangans'), ['role' => $role]);
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function ShowFormRuangan()
     {
-        //
+        $ruangans = Ruangan::all();
+        // Kirim data ke view
+        return view('form.form-tambah-ruangan', compact('ruangans'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan ruangan baru sesuai role pengguna.
      */
     public function store(Request $request)
     {
-        // Validasi input form
+        $user = Auth::user();
+        $role = $user->role;
+
+        // Validasi input
         $validatedData = $request->validate([
             'gedung' => 'required|in:FLTB,Pendidikan,Anggrek,GOR,Auditorium',
             'nama_ruangan' => 'required|string|max:100',
@@ -36,61 +63,88 @@ class RuanganController extends Controller
             'deskripsi' => 'nullable|string|max:255',
         ]);
 
-        // Menyimpan data ke dalam tabel ruangan
+        // Batasi Sarpras hanya bisa membuat di gedung tertentu
+        if ($role === 'sarpras' && !in_array($validatedData['gedung'], ['GOR', 'FLTB', 'Anggrek', 'Auditorium'])) {
+            return redirect()->back()->with('error', 'Sarpras hanya dapat mengelola ruangan di GOR, FLTB, Anggrek, Auditorium.');
+        }
+
+        // Batasi BAAK hanya bisa membuat di gedung Pendidikan
+        if ($role === 'baak' && $validatedData['gedung'] !== 'Pendidikan') {
+            return redirect()->back()->with('error', 'BAAK hanya dapat mengelola ruangan di gedung Pendidikan.');
+        }
+
+        // Simpan data ruangan
         Ruangan::create([
+            'user_id' => $user->id,
             'gedung' => $validatedData['gedung'],
             'nama' => $validatedData['nama_ruangan'],
             'kapasitas' => $validatedData['kapasitas'],
             'deskripsi' => $validatedData['deskripsi'],
+            'status' => 'tersedia',
         ]);
 
-        // Redirect setelah menyimpan data
-        return redirect()->route('rooms.table')->with('success', 'Ruangan berhasil ditambahkan');
+        return redirect()->route('rooms.table', ['role' => Auth::user()->role])
+            ->with('success', 'Ruangan berhasil ditambahkan');
     }
+
 
     /**
      * Display the specified resource.
      */
-    public function show(ruangan $ruangan)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-    {
-        // Cari ruangan berdasarkan ID
-        $ruangans = Ruangan::findOrFail($id);
-
-        // Tampilkan view form update dengan data ruangan
-        return view('form.form-update-ruangan', compact('ruangans'));
-    }
+    public function edit($id) {}
 
 
 
     /**
      * Update the specified resource in storage.
      */
+    /**
+     * Mengupdate ruangan dengan Modal Edit.
+     */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
+        $role = $user->role;
+
         // Validasi input
         $validatedData = $request->validate([
-            'gedung' => 'required|string',
-            'nama' => 'required|string|max:255',
+            'gedung' => 'required|in:FLTB,Pendidikan,Anggrek,GOR,Auditorium',
+            'nama_ruangan' => 'required|string|max:100',
             'kapasitas' => 'required|integer|min:1',
-            'deskripsi' => 'required|string|max:500',
+            'deskripsi' => 'nullable|string|max:255',
+            'status' => 'required|in:tersedia,tidak tersedia'
         ]);
 
-        // Cari ruangan berdasarkan ID
-        $ruangans = Ruangan::findOrFail($id);
+        // Ambil data ruangan
+        $ruangan = Ruangan::findOrFail($id);
 
-        // Update data ruangan
-        $ruangans->update($validatedData);
+        // Batasi akses berdasarkan role
+        if ($role === 'sarpras' && !in_array($validatedData['gedung'], ['GOR', 'FLTB', 'Anggrek', 'Auditorium'])) {
+            return response()->json(['success' => false, 'message' => 'Sarpras hanya dapat mengelola ruangan di GOR, FLTB, Anggrek, Auditorium.']);
+        }
 
-        return redirect()->route('rooms.table')->with('success', 'Ruangan berhasil diupdate.');
+        if ($role === 'baak' && $validatedData['gedung'] !== 'Pendidikan') {
+            return response()->json(['success' => false, 'message' => 'BAAK hanya dapat mengelola ruangan di gedung Pendidikan.']);
+        }
+
+        // Update ruangan
+        $ruangan->update([
+            'gedung' => $validatedData['gedung'],
+            'nama' => $validatedData['nama_ruangan'],
+            'kapasitas' => $validatedData['kapasitas'],
+            'deskripsi' => $validatedData['deskripsi'],
+            'status' => $validatedData['status'],
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Ruangan berhasil diperbarui!']);
     }
+
+
 
 
     /**
@@ -98,12 +152,25 @@ class RuanganController extends Controller
      */
     public function destroy($id)
     {
-        // Cari ruangan berdasarkan ID
-        $ruangans = Ruangan::findOrFail($id);
+        $user = Auth::user();
+        $ruangan = Ruangan::findOrFail($id);
 
-        // Hapus ruangan
-        $ruangans->delete();
+        // Sarpras hanya bisa menghapus ruangan di gedung tertentu
+        if ($user->role === 'sarpras' && !in_array($ruangan->gedung, ['GOR', 'FLTB', 'Anggrek', 'Auditorium'])) {
+            return abort(403, 'Anda tidak memiliki izin menghapus ruangan ini.');
+        }
 
-        return redirect()->route('rooms.table')->with('success', 'Ruangan berhasil dihapus.');
+        // BAAK hanya bisa menghapus ruangan di gedung Pendidikan
+        if ($user->role === 'baak' && $ruangan->gedung !== 'Pendidikan') {
+            return abort(403, 'Anda tidak memiliki izin menghapus ruangan ini.');
+        }
+
+        // Admin bisa menghapus semua ruangan tanpa batasan
+        if ($user->role === 'admin' || $user->role === 'sarpras' || $user->role === 'baak') {
+            $ruangan->delete();
+            return redirect()->route('rooms.table', ['role' => $user->role])->with('success', 'Ruangan berhasil dihapus.');
+        }
+
+        return abort(403, 'Anda tidak memiliki izin menghapus ruangan ini.');
     }
 }

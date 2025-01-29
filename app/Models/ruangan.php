@@ -18,6 +18,7 @@ class Ruangan extends Model
         'nama',
         'kapasitas',
         'deskripsi',
+        'status',
     ];
 
     public static function gedungOptions()

@@ -64,23 +64,9 @@ class DashBoardController extends Controller
         return view('form.form-booking', compact('ruangans'));
     }
 
-    public function ShowFormRuangan()
-    {
-        $ruangans = Ruangan::all();
-        // Kirim data ke view
-        return view('form.form-tambah-ruangan', compact('ruangans'));
-    }
-
     public function ShowFormUser()
     {
         return view('form.form-tambah-user');
-    }
-
-    public function showlistruangan()
-    {
-        $ruangans = Ruangan::all();
-
-        return view('list.data-ruangan', compact('ruangans'));
     }
     public function showlistuser()
     {

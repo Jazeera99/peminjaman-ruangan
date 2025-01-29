@@ -22,7 +22,7 @@
               <a class="nav-link text-white" href="{{ route('user.table') }}"><i class="fas fa-user me-2"></i>Manage User</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="{{ route('rooms.table') }}"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
+            <a class="nav-link text-white" href="{{ route('rooms.table', ['role' => Auth::user()->role]) }}"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
           </li>
           <li class="nav-item">
               <!-- Form logout -->
@@ -69,7 +69,7 @@
               <a class="nav-link text-white" href="/baak/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="/list/data-ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
+            <a class="nav-link text-white" href="{{ route('rooms.table', ['role' => Auth::user()->role]) }}"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
           </li>
           <li class="nav-item">
               <!-- Form logout -->
@@ -94,7 +94,7 @@
               <a class="nav-link text-white" href="/sarpras/list-booking"><i class="fas fa-list me-2"></i>List Booking</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="/list/data-ruangan"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
+            <a class="nav-link text-white" href="{{ route('rooms.table', ['role' => Auth::user()->role]) }}"><i class="fas fa-door-open me-2"></i>Manage Ruangan</a>
           </li> 
           <li class="nav-item">
               <!-- Form logout -->

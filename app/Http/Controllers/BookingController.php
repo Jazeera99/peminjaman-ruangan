@@ -21,7 +21,7 @@ class BookingController extends Controller
             'jumlah_peserta' => 'required|integer|min:1',
             'keterangan' => 'nullable|string|max:255',
             'nomor_Whatsapp' => 'required|string|max:15',
-            'file' => 'required|mimes:pdf,doc,docx|max:2048',
+            'file' => 'nullable|image|mimes:pdf,doc,docx,jpeg,jpg,png|max:2048',
             'pasFoto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -46,7 +46,7 @@ class BookingController extends Controller
         }
 
         // Simpan File
-        $filePath = $request->file('file')->store('files', 'public');
+        $filePath = $request->file('file') ? $request->file('file')->store('files', 'public') : null;
         $pasFotoPath = $request->file('pasFoto') ? $request->file('pasFoto')->store('pas_foto', 'public') : null;
 
         // Simpan Data Peminjaman
