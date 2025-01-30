@@ -8,22 +8,22 @@
       <ul class="navbar-nav ms-auto">
         @if (Auth::user()->role == 'sarpras')
           <li class="nav-item">
-            <a class="nav-link text-black" href="#">Hai, Sarpras</a>
+            <a class="nav-link text-black" href="#"><i class="fas fa-user me-2">Hai, Sarpras</a>
           </li>
         @endif
         @if (Auth::user()->role == 'baak')
           <li class="nav-item">
-            <a class="nav-link text-black" href="#">Hai, BAAK</a>
+            <a class="nav-link text-black" href="#"><i class="fas fa-user me-2">Hai, BAAK</a>
           </li>
         @endif
         @if (Auth::user()->role == 'admin')
           <li class="nav-item">
-            <a class="nav-link text-black" href="#">Hai, Admin</a>
+            <a class="nav-link text-black" href="#"><i class="fas fa-user me-2"></i>Hai, Admin</a>
           </li>
         @endif
         @if (Auth::user()->role == 'peminjam')
           <li class="nav-item">
-            <a class="nav-link text-black" href="#">Hai, User</a>
+            <a class="nav-link text-black" href="#"><i class="fas fa-user me-2">Hai, User</a>
           </li>
         @endif
       </ul>

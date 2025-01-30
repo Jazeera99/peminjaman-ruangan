@@ -18,10 +18,10 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" style="background-color: #FFF8F8;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'ROOMEASE') }}
+                    <img src="../images/logo-black-roomease.png" alt="Logo ROOMEASE" class="navbar-logo" style="height: 60px; margin-left: -80px;">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -36,7 +36,10 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
-                        @guest
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                            <img src="../images/LOGO ULBI - WIDE DARK.png" alt="Logo ULBI" class="navbar-logo" style="height: 40px; margin-right: -70px;">
+                        </a>
+                        {{-- @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -47,8 +50,8 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
-                            @endif
-                        @else
+                            @endif --}}
+                        {{-- @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -66,7 +69,7 @@
                                     </form>
                                 </div>
                             </li>
-                        @endguest
+                        @endguest --}}
                     </ul>
                 </div>
             </div>
