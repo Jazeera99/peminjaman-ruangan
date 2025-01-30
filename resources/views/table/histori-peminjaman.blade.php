@@ -24,8 +24,8 @@
                 <tr>
                     <td>{{ $peminjaman->id }}</td>
                     <td>{{ $peminjaman->tanggal_kegiatan }}</td>
-                    <td>{{ $peminjaman->waktu_mulai }}</td>
-                    <td>{{ $peminjaman->waktu_selesai }}</td>
+                    <td>{{ \Carbon\Carbon::parse($peminjaman->waktu_mulai)->format('H:i') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($peminjaman->waktu_selesai)->format('H:i') }}</td>
                     <td>{{ $peminjaman->room->nama ?? '-' }}</td>
                     <td>{{ $peminjaman->nama_peminjam }}</td>
                     <td>{{ $peminjaman->user->nama ?? '-' }}</td>

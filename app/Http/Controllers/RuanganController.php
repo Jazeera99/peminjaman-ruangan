@@ -141,7 +141,8 @@ class RuanganController extends Controller
             'status' => $validatedData['status'],
         ]);
 
-        return response()->json(['success' => true, 'message' => 'Ruangan berhasil diperbarui!']);
+        return redirect()->route('rooms.table', ['role' => Auth::user()->role])
+            ->with('success', 'Ruangan berhasil Diperbarui');
     }
 
 

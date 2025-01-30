@@ -4,62 +4,8 @@
         <div class="text-center">
             <a class="btn btn-primary text-white" href="/addruangan">Tambah Ruangan</a>
         </div>
-
-        <div>
-            <div class="container">
-                <button id="showFormButton" class="btn btn-success mb-3">Buat Laporan</button>
-                <div class="form-container" id="formContainer" style="display: none;">
-                    <button type="button" id="hideFormButton" class="close-button">&times;</button>
-                    <form action="" method="GET">
-                        @csrf
-                        <div class="row">
-                            <!-- Dropdown Bulan -->
-                            <div class="col-md-6 mb-3">
-                                <label for="month" class="form-label">Pilih Bulan</label>
-                                <select name="month" id="month" class="form-control" required>
-                                    <option value="">-- Pilih Bulan --</option>
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <!-- Tambahkan opsi bulan lainnya -->
-                                </select>
-                            </div>
-
-                            <!-- Dropdown Tahun -->
-                            <div class="col-md-6 mb-3">
-                                <label for="year" class="form-label">Pilih Tahun</label>
-                                <select name="year" id="year" class="form-control" required>
-                                    <option value="">-- Pilih Tahun --</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                    <!-- Tambahkan opsi tahun lainnya -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <button class="btn btn-success me-2">Unduh Excel</button>
-                            <button class="btn btn-danger">Unduh PDF</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <script>
-                document.getElementById('showFormButton').addEventListener('click', function() {
-                    document.getElementById('formContainer').style.display = 'block';
-                    this.style.display = 'none';
-                });
-
-                document.getElementById('hideFormButton').addEventListener('click', function() {
-                    document.getElementById('formContainer').style.display = 'none';
-                    document.getElementById('showFormButton').style.display = 'block';
-                });
-            </script>
-        </div>
     </div>
-
+    
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Berhasil!</strong> {{ session('success') }}
@@ -134,20 +80,20 @@
                                         </div>
                                         <div class="mb-3 mt-3">
                                             <label for="nama_ruangan" class="form-label">Nama Ruangan</label>
-                                            <input type="text" id="nama_ruangan" name="nama_ruangan" class="form-control"
-                                                value="{{ $ruangan->nama_ruangan }}" placeholder="Masukkan nama ruangan"
-                                                required>
+                                            <input type="text" id="nama_ruangan" name="nama_ruangan"
+                                                class="form-control" value="{{ $ruangan->nama }}"
+                                                placeholder="Masukkan nama ruangan" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="kapasitas" class="form-label">Kapasitas</label>
-                                            <input type="number" id="kapasitas" name="kapasitas"
-                                                class="form-control" value="{{ $ruangan->kapasitas }}"
+                                            <input type="number" id="kapasitas" name="kapasitas" class="form-control"
+                                                value="{{ $ruangan->kapasitas }}"
                                                 placeholder="Masukkan kapasitas ruangan" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="deskripsi" class="deskripsi">Deskripsi</label>
-                                            <input type="text" id="deskripsi" name="deskripsi"
-                                                class="form-control" value="{{ $ruangan->deskripsi }}"
+                                            <input type="text" id="deskripsi" name="deskripsi" class="form-control"
+                                                value="{{ $ruangan->deskripsi }}"
                                                 placeholder="Masukkan deskripsi ruangan" required>
                                         </div>
                                         <div class="mb-3">
@@ -178,6 +124,6 @@
                 @endforelse
             </tbody>
         </table>
-        
+
     </div>
 </div>

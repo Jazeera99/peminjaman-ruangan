@@ -84,9 +84,6 @@ class PeminjamanController extends Controller
         return Excel::download(new PeminjamanExport($query->get()), 'peminjaman.xlsx');
     }
 
-
-
-
     public function downloadPdf(Request $request)
     {
         $peminjaman = Peminjaman::with(['room', 'user'])
@@ -137,20 +134,20 @@ class PeminjamanController extends Controller
             $file_tambahan = $data->file_tambahan ? '<a href="' . asset('storage/' . $data->file_tambahan) . '">Download</a>' : '-';
 
             $html .= '<tr>
-                <td>' . $data->id . '</td>
-                <td>' . $data->tanggal_kegiatan . '</td>    
-                <td>' . $data->waktu_mulai . '</td>
-                <td>' . $data->waktu_selesai . '</td>
-                <td>' . ($data->room->nama ?? '-') . '</td>
-                <td>' . $data->nama_peminjam . '</td>
-                <td>' . ($data->user->nama ?? '-') . '</td>
-                <td>' . $data->nama_kegiatan . '</td>
-                <td>' . $data->nomor_Whatsapp . '</td>
-                <td>' . $data->keterangan . '</td>
-                <td>' . $data->status . '</td>
-                <td>' . $pas_foto . '</td>
-                <td>' . $file_tambahan . '</td>
-            </tr>';
+            <td>' . $data->id . '</td>
+            <td>' . $data->tanggal_kegiatan . '</td>    
+            <td>' . $data->waktu_mulai . '</td>
+            <td>' . $data->waktu_selesai . '</td>
+            <td>' . ($data->room->nama ?? '-') . '</td>
+            <td>' . $data->nama_peminjam . '</td>
+            <td>' . ($data->user->nama ?? '-') . '</td>
+            <td>' . $data->nama_kegiatan . '</td>
+            <td>' . $data->nomor_Whatsapp . '</td>
+            <td>' . $data->keterangan . '</td>
+            <td>' . $data->status . '</td>
+            <td>' . $pas_foto . '</td>
+            <td>' . $file_tambahan . '</td>
+        </tr>';
         }
 
         $html .= '</tbody></table>';
@@ -159,6 +156,7 @@ class PeminjamanController extends Controller
         $pdf = Pdf::loadHTML($html);
         return $pdf->download('peminjaman.pdf');
     }
+
 
 
 
@@ -203,23 +201,18 @@ class PeminjamanController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        // Cari peminjaman berdasarkan ID
         $peminjaman = Peminjaman::findOrFail($id);
 
-        // Update status peminjaman
-        $peminjaman->status = $request->input('status');
-
-        // Jika status ditolak, simpan alasan
-        if ($request->input('status') == 'ditolak') {
-            $peminjaman->alasan_ditolak = $request->input('alasan_ditolak');
-        } else {
-            // Kosongkan alasan jika status bukan ditolak
-            $peminjaman->alasan_ditolak = null;
+        // Update status based on the request
+        if ($request->status === 'disetujui') {
+            $peminjaman->status = 'disetujui';
+        } elseif ($request->status === 'ditolak') {
+            $peminjaman->status = 'ditolak';
+            $peminjaman->alasan_ditolak = $request->reason;  // Store the rejection reason
         }
 
         $peminjaman->save();
 
-        // Redirect kembali ke halaman dengan pesan sukses
-        return redirect()->route('peminjaman.index')->with('success', 'Status peminjaman berhasil diperbarui.');
+        return redirect()->route('peminjaman.index')->with('success', 'Status peminjaman berhasil diperbarui');
     }
 }

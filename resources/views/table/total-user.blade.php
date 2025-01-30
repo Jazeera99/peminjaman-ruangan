@@ -1,61 +1,8 @@
 <div class="container mt-4">
-    
     <!-- Tombol Unduh -->
     <div class="d-flex justify-content-between mb-3">
         <div class="text-center">
             <a class="btn btn-primary text-white" href="/adduser">Tambah User</a>
-        </div>
-        <div>
-            <div class="container">
-                <button id="showFormButton" class="btn btn-success mb-3">Buat Laporan</button>
-                <div class="form-container" id="formContainer">
-                    <button type="button" id="hideFormButton" class="close-button">&times;</button> 
-                    <form action="" method="GET">
-                        @csrf
-                        <div class="row">
-                            <!-- Dropdown Bulan -->
-                            <div class="col-md-6 mb-3">
-                                <label for="month" class="form-label">Pilih Bulan</label>
-                                <select name="month" id="month" class="form-control" required>
-                                    <option value="">-- Pilih Bulan --</option>
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <!-- Tambahkan opsi bulan lainnya -->
-                                </select>
-                            </div>
-        
-                            <!-- Dropdown Tahun -->
-                            <div class="col-md-6 mb-3">
-                                <label for="year" class="form-label">Pilih Tahun</label>
-                                <select name="year" id="year" class="form-control" required>
-                                    <option value="">-- Pilih Tahun --</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                    <!-- Tambahkan opsi tahun lainnya -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <button class="btn btn-success me-2">Unduh Excel</button>
-                            <button class="btn btn-danger">Unduh PDF</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        
-            <script>
-                document.getElementById('showFormButton').addEventListener('click', function() {
-                    document.getElementById('formContainer').style.display = 'block';
-                    this.style.display = 'none';
-                });
-
-                document.getElementById('hideFormButton').addEventListener('click', function() {
-                    document.getElementById('formContainer').style.display = 'none';
-                    document.getElementById('showFormButton').style.display = 'block';
-                });
-            </script>
         </div>
     </div>
 
@@ -94,68 +41,77 @@
                         <td>{{ $user->password }}</td>
                         <td>{{ ucfirst($user->role) }}</td>
                         <td class="text-center">
-                           <!-- Tombol Edit -->
-                           <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                           data-bs-target="#editUserModal{{ $user->id }}">EDIT</button>
+                            <!-- Tombol Edit -->
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editUserModal{{ $user->id }}">EDIT</button>
 
-                       <!-- Tombol Hapus -->
-                       <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                           style="display:inline;">
-                           @csrf
-                           @method('DELETE')
-                           <button type="submit" class="btn btn-danger btn-sm"
-                               onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">HAPUS</button>
-                       </form>
-                   </td>
-               </tr>
+                            <!-- Tombol Hapus -->
+                            <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">HAPUS</button>
+                            </form>
+                        </td>
+                    </tr>
 
-               <!-- Modal Edit -->
-               <div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1" aria-labelledby="editUserModalLabel{{ $user->id }}" aria-hidden="true">
-                   <div class="modal-dialog">
-                       <div class="modal-content">
-                           <div class="modal-header">
-                               <h5 class="modal-title" id="editUserModalLabel{{ $user->id }}">Edit User</h5>
-                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                           </div>
-                           <form action="{{ route('user.update', $user->id) }}" method="POST">
-                               @csrf
-                               @method('PUT')
-                               <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="nama_user" class="form-label">Nama User</label>
-                                    <input type="text" id="nama_user" name="nama_user" class="form-control"
-                                        value="{{ $user->nama }}" placeholder="Masukkan nama user" required>
+                    <!-- Modal Edit -->
+                    <div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1"
+                        aria-labelledby="editUserModalLabel{{ $user->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editUserModalLabel{{ $user->id }}">Edit User</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" id="email" name="email" class="form-control"
-                                        value="{{ $user->email }}" placeholder="Masukkan email user" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password (kosongkan jika tidak ingin diubah)</label>
-                                    <input type="password" id="password" name="password" class="form-control"
-                                        placeholder="Masukkan password baru">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="role" class="role">Role</label>
-                                    <select id="role" name="role" class="form-control" required>
-                                        <option value="">-- Pilih role --</option>
-                                        <option value="ormawa" {{ $user->role == 'ormawa' ? 'selected' : '' }}>Ormawa</option>
-                                        <option value="ukm" {{ $user->role == 'ukm' ? 'selected' : '' }}>Ukm</option>
-                                        <option value="baak" {{ $user->role == 'baak' ? 'selected' : '' }}>BAAK</option>
-                                        <option value="sarpras" {{ $user->role == 'sarpras' ? 'selected' : '' }}>Sarpras</option>
-                                        <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    </select>
-                                </div>
-                               <div class="modal-footer">
-                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                   <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                               </div>
-                           </form>
-                       </div>
-                   </div>
-               </div>
-               <!-- End Modal Edit -->
+                                <form action="{{ route('user.update', $user->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="nama_user" class="form-label">Nama User</label>
+                                            <input type="text" id="nama_user" name="nama_user" class="form-control"
+                                                value="{{ $user->nama }}" placeholder="Masukkan nama user" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" id="email" name="email" class="form-control"
+                                                value="{{ $user->email }}" placeholder="Masukkan email user" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Password (kosongkan jika tidak
+                                                ingin diubah)</label>
+                                            <input type="password" id="password" name="password" class="form-control"
+                                                placeholder="Masukkan password baru">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="role" class="role">Role</label>
+                                            <select id="role" name="role" class="form-control" required>
+                                                <option value="">-- Pilih role --</option>
+                                                <option value="ormawa" {{ $user->role == 'ormawa' ? 'selected' : '' }}>
+                                                    Ormawa</option>
+                                                <option value="ukm" {{ $user->role == 'ukm' ? 'selected' : '' }}>Ukm
+                                                </option>
+                                                <option value="baak" {{ $user->role == 'baak' ? 'selected' : '' }}>
+                                                    BAAK</option>
+                                                <option value="sarpras"
+                                                    {{ $user->role == 'sarpras' ? 'selected' : '' }}>Sarpras</option>
+                                                <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>
+                                                    Admin</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Modal Edit -->
                 @endforeach
             </tbody>
         </table>
