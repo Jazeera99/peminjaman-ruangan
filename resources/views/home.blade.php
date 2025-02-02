@@ -58,28 +58,22 @@
     <section class="stats bg-light py-5">
         <div class="container">
             <div class="row text-center g-4">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="stat-card p-3">
-                        <h3 class="display-4 fw-bold text-primary">100+</h3>
+                        <h3 class="display-4 fw-bold text-primary">{{ $stats['total_ruangan'] }}</h3>
+                        <p class="text-muted">Total Ruangan</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card p-3">
+                        <h3 class="display-4 fw-bold text-primary">{{ $stats['ruangan_tersedia'] }}</h3>
                         <p class="text-muted">Ruangan Tersedia</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="stat-card p-3">
-                        <h3 class="display-4 fw-bold text-primary">500+</h3>
-                        <p class="text-muted">Peminjaman Sukses</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stat-card p-3">
-                        <h3 class="display-4 fw-bold text-primary">50+</h3>
-                        <p class="text-muted">Organisasi Terdaftar</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stat-card p-3">
-                        <h3 class="display-4 fw-bold text-primary">24/7</h3>
-                        <p class="text-muted">Layanan Support</p>
+                        <h3 class="display-4 fw-bold text-primary">{{ $stats['peminjaman_hari_ini'] }}</h3>
+                        <p class="text-muted">Peminjaman Hari Ini</p>
                     </div>
                 </div>
             </div>

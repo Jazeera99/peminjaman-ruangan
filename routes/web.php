@@ -9,9 +9,7 @@ use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\UserController;
 
 // Menampilkan halaman utama
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [PeminjamanController::class, 'homeStats']);
 // Menampilkan form login
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 

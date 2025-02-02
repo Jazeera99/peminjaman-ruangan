@@ -215,4 +215,30 @@ class PeminjamanController extends Controller
 
         return redirect()->route('peminjaman.index')->with('success', 'Status peminjaman berhasil diperbarui');
     }
+
+    public function homeStats()
+    {
+        $today = now()->format('Y-m-d');
+        $currentTime = now()->format('H:i:s');
+        
+        // Get total rooms
+        $total_ruangan = Ruangan::count();
+        
+        // Get rooms that are booked today with approved status
+        $booked_rooms = Peminjaman::whereDate('tanggal_kegiatan', $today)
+            ->where('status', 'disetujui')
+            ->where('waktu_mulai', '<=', $currentTime)
+            ->where('waktu_selesai', '>=', $currentTime)
+            ->count();
+        
+        $stats = [
+            'total_ruangan' => $total_ruangan,
+            'ruangan_tersedia' => $total_ruangan - $booked_rooms,
+            'peminjaman_hari_ini' => Peminjaman::whereDate('tanggal_kegiatan', $today)
+                ->where('status', 'disetujui')
+                ->count()
+        ];
+
+        return view('home', compact('stats'));
+    }
 }
