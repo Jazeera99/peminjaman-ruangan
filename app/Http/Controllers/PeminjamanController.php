@@ -39,12 +39,12 @@ class PeminjamanController extends Controller
             })
             ->when($role == 'sarpras', function ($query) {
                 return $query->whereHas('room', function ($query) {
-                    $query->whereIn('gedung', ['GOR', 'FLTB', 'Anggrek', 'Auditorium']);
+                    $query->whereIn('gedung', ['GOR', 'Anggrek', 'Auditorium']);
                 });
             })
             ->when($role == 'baak', function ($query) {
                 return $query->whereHas('room', function ($query) {
-                    $query->where('gedung', 'Pendidikan');
+                    $query->whereIn('gedung', ['Pendidikan', 'FLTB']);
                 });
             })
             ->when($role == 'admin', function ($query) {

@@ -8,8 +8,12 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\UserController;
 
+// Menampilkan halaman utama
+Route::get('/', function () {
+    return view('home');
+});
 // Menampilkan form login
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 
 // Menangani login dengan metode POST
 Route::post('/login', [AuthController::class, 'login'])->name('login.custom');

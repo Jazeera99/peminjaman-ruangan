@@ -39,12 +39,12 @@
                             <select id="gedung" name="gedung" class="form-control" required>
                                 <option value="">-- Pilih Gedung --</option>
                                 @if ($userRole === 'sarpras')
-                                    <option value="FLTB">FLTB</option>
                                     <option value="Anggrek">Anggrek</option>
                                     <option value="GOR">GOR</option>
                                     <option value="Auditorium">Auditorium</option>
                                 @elseif ($userRole === 'baak')
                                     <option value="Pendidikan">Pendidikan</option>
+                                    <option value="FLTB">FLTB</option>
                                 @else
                                     <option value="FLTB">FLTB</option>
                                     <option value="Pendidikan">Pendidikan</option>

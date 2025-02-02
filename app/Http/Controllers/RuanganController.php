@@ -22,11 +22,11 @@ class RuanganController extends Controller
         }
         // Sarpras hanya bisa melihat ruangan dari gedung tertentu
         elseif ($role === 'sarpras') {
-            $ruangans = Ruangan::whereIn('gedung', ['GOR', 'FLTB', 'Anggrek', 'Auditorium'])->get();
+            $ruangans = Ruangan::whereIn('gedung', ['GOR', 'Anggrek', 'Auditorium'])->get();
         }
         // BAAK hanya bisa melihat ruangan di gedung Pendidikan
         elseif ($role === 'baak') {
-            $ruangans = Ruangan::where('gedung', 'Pendidikan')->get();
+            $ruangans = Ruangan::whereIn('gedung', ['Pendidikan', 'FLTB'])->get();
         }
         // Peminjam tidak seharusnya melihat daftar ruangan
         else {
@@ -69,7 +69,7 @@ class RuanganController extends Controller
         }
 
         // Batasi BAAK hanya bisa membuat di gedung Pendidikan
-        if ($role === 'baak' && $validatedData['gedung'] !== 'Pendidikan') {
+        if ($role === 'sarpras' && !in_array($validatedData['gedung'], ['Pendidikan', 'FLTB'])) {
             return redirect()->back()->with('error', 'BAAK hanya dapat mengelola ruangan di gedung Pendidikan.');
         }
 
@@ -124,12 +124,12 @@ class RuanganController extends Controller
         $ruangan = Ruangan::findOrFail($id);
 
         // Batasi akses berdasarkan role
-        if ($role === 'sarpras' && !in_array($validatedData['gedung'], ['GOR', 'FLTB', 'Anggrek', 'Auditorium'])) {
-            return response()->json(['success' => false, 'message' => 'Sarpras hanya dapat mengelola ruangan di GOR, FLTB, Anggrek, Auditorium.']);
+        if ($role === 'sarpras' && !in_array($validatedData['gedung'], ['GOR', 'Anggrek', 'Auditorium'])) {
+            return response()->json(['success' => false, 'message' => 'Sarpras hanya dapat mengelola ruangan di GOR, Anggrek, Auditorium.']);
         }
 
-        if ($role === 'baak' && $validatedData['gedung'] !== 'Pendidikan') {
-            return response()->json(['success' => false, 'message' => 'BAAK hanya dapat mengelola ruangan di gedung Pendidikan.']);
+        if ($role === 'sarpras' && !in_array($validatedData['gedung'], ['Pendidikan', 'FLTB'])) {
+            return response()->json(['success' => false, 'message' => 'BAAK hanya dapat mengelola ruangan di gedung Pendidikan, FLTB.']);
         }
 
         // Update ruangan

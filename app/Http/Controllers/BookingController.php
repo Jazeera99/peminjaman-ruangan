@@ -21,8 +21,8 @@ class BookingController extends Controller
             'jumlah_peserta' => 'required|integer|min:1',
             'keterangan' => 'nullable|string|max:255',
             'nomor_Whatsapp' => 'required|string|max:15',
-            'file' => 'nullable|image|mimes:pdf,doc,docx,jpeg,jpg,png|max:2048',
-            'pasFoto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'file' => 'nullable|mimes:pdf,doc,docx,jpeg,jpg,png|max:5120',
+            'pasFoto' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'alasan_ditolak' => 'nullable|string|max:255',
         ]);
 
