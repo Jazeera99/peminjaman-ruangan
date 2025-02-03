@@ -26,11 +26,18 @@ class BookingController extends Controller
             'alasan_ditolak' => 'nullable|string|max:255',
         ]);
 
-        // Cari Ruangan
+        // Cari Ruangan dan cek statusnya
         $ruangan = Ruangan::findOrFail($request->room_id);
+        
+        if ($ruangan->status !== 'tersedia') {
+            return redirect()->back()
+                ->with('error', 'Ruangan tidak tersedia untuk peminjaman.')
+                ->withInput();
+        }
 
         // Cek Konflik Jadwal
         $conflict = Peminjaman::where('room_id', $ruangan->id)
+            ->where('status', 'disetujui') // Hanya cek konflik dengan peminjaman yang disetujui
             ->where('tanggal_kegiatan', $request->tanggal_kegiatan)
             ->where(function ($query) use ($request) {
                 $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
@@ -43,7 +50,9 @@ class BookingController extends Controller
             ->exists();
 
         if ($conflict) {
-            return redirect()->back()->with('error', 'Ruangan telah dibooking di waktu dan tanggal tersebut!');
+            return redirect()->back()
+                ->with('error', 'Ruangan telah dibooking di waktu dan tanggal tersebut!')
+                ->withInput();
         }
 
         // Simpan File

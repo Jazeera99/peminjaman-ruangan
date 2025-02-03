@@ -221,24 +221,38 @@ class PeminjamanController extends Controller
         $today = now()->format('Y-m-d');
         $currentTime = now()->format('H:i:s');
         
-        // Get total rooms
-        $total_ruangan = Ruangan::count();
+        // Get only rooms with status 'tersedia'
+        $total_ruangan = Ruangan::where('status', 'tersedia')->count();
         
-        // Get rooms that are booked today with approved status
-        $booked_rooms = Peminjaman::whereDate('tanggal_kegiatan', $today)
+        // Get booked room names for today
+        $booked_room_names = Peminjaman::whereDate('tanggal_kegiatan', $today)
             ->where('status', 'disetujui')
-            ->where('waktu_mulai', '<=', $currentTime)
-            ->where('waktu_selesai', '>=', $currentTime)
-            ->count();
+            ->where(function($query) use ($currentTime) {
+                $query->where(function($q) use ($currentTime) {
+                    // Room is currently in use
+                    $q->where('waktu_mulai', '<=', $currentTime)
+                       ->where('waktu_selesai', '>=', $currentTime);
+                })->orWhere(function($q) use ($currentTime) {
+                    // Room is booked for later today
+                    $q->where('waktu_mulai', '>', $currentTime);
+                });
+            })
+            ->pluck('nama_ruangan')
+            ->toArray();
+        
+        // Get available rooms (excluding booked rooms and rooms with status 'tidak tersedia')
+        $available_rooms = Ruangan::where('status', 'tersedia')
+            ->whereNotIn('nama', $booked_room_names)
+            ->get();
         
         $stats = [
             'total_ruangan' => $total_ruangan,
-            'ruangan_tersedia' => $total_ruangan - $booked_rooms,
+            'ruangan_tersedia' => $available_rooms->count(),
             'peminjaman_hari_ini' => Peminjaman::whereDate('tanggal_kegiatan', $today)
                 ->where('status', 'disetujui')
                 ->count()
         ];
 
-        return view('home', compact('stats'));
+        return view('home', compact('stats', 'available_rooms'));
     }
 }

@@ -79,6 +79,35 @@
             </div>
         </div>
     </section>
+
+    <!-- Available Rooms Section -->
+    <section class="available-rooms py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Ruangan Tersedia Hari Ini</h2>
+            <div class="row g-4">
+                @if($available_rooms->count() > 0)
+                    @foreach($available_rooms as $room)
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $room->nama }}</h5>
+                                    <p class="card-text">
+                                        <i class="bi bi-building"></i> <strong>Gedung:</strong> {{ $room->gedung }}<br>
+                                        <i class="bi bi-people"></i> <strong>Kapasitas:</strong> {{ $room->kapasitas }} orang<br>
+                                        <i class="bi bi-check-circle text-success"></i> <strong>Status:</strong> Tersedia
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="col-12 text-center">
+                        <p class="text-muted">Semua ruangan telah dibooking untuk hari ini.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </section>
 </div>
 
 <style>
