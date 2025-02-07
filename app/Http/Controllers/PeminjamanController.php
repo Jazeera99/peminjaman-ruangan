@@ -53,6 +53,8 @@ class PeminjamanController extends Controller
             ->when($role == 'peminjam', function ($query) {
                 return $query->where('user_id', Auth::id());
             })
+            ->orderBy('tanggal_kegiatan', 'asc') // Mengurutkan berdasarkan tanggal terbaru
+            ->orderBy('waktu_mulai', 'asc')      // Jika tanggal sama, urutkan berdasarkan waktu mulai
             ->get();
 
         return view('list.list-booking', compact('peminjamanRuangans'));
@@ -62,6 +64,8 @@ class PeminjamanController extends Controller
 
     public function downloadExcel(Request $request)
     {
+        $role = Auth::user()->role;
+        
         $query = Peminjaman::with(['room', 'user'])
             ->when($request->has('month') && $request->month != '', function ($query) use ($request) {
                 return $query->whereMonth('tanggal_kegiatan', $request->month);
@@ -71,13 +75,23 @@ class PeminjamanController extends Controller
             })
             ->when($request->has('search') && $request->search != '', function ($query) use ($request) {
                 return $query->where(function ($query) use ($request) {
-                    $query->orWhere('nama_peminjam', 'like', '%' . $request->search . '%')
+                    $query->where('nama_peminjam', 'like', '%' . $request->search . '%')
                         ->orWhere('nama_ormawa', 'like', '%' . $request->search . '%')
                         ->orWhere('nama_kegiatan', 'like', '%' . $request->search . '%')
                         ->orWhere('nama_ruangan', 'like', '%' . $request->search . '%')
                         ->orWhere('nomor_Whatsapp', 'like', '%' . $request->search . '%')
                         ->orWhere('keterangan', 'like', '%' . $request->search . '%')
                         ->orWhere('status', 'like', '%' . $request->search . '%');
+                });
+            })
+            ->when($role == 'sarpras', function ($query) {
+                return $query->whereHas('room', function ($query) {
+                    $query->whereIn('gedung', ['GOR', 'Anggrek', 'Auditorium']);
+                });
+            })
+            ->when($role == 'baak', function ($query) {
+                return $query->whereHas('room', function ($query) {
+                    $query->whereIn('gedung', ['Pendidikan', 'FLTB']);
                 });
             });
 
@@ -86,6 +100,8 @@ class PeminjamanController extends Controller
 
     public function downloadPdf(Request $request)
     {
+        $role = Auth::user()->role;
+        
         $peminjaman = Peminjaman::with(['room', 'user'])
             ->when($request->has('month') && $request->month != '', function ($query) use ($request) {
                 return $query->whereMonth('tanggal_kegiatan', $request->month);
@@ -95,13 +111,23 @@ class PeminjamanController extends Controller
             })
             ->when($request->has('search') && $request->search != '', function ($query) use ($request) {
                 return $query->where(function ($query) use ($request) {
-                    $query->orWhere('nama_peminjam', 'like', '%' . $request->search . '%')
+                    $query->where('nama_peminjam', 'like', '%' . $request->search . '%')
                         ->orWhere('nama_ormawa', 'like', '%' . $request->search . '%')
                         ->orWhere('nama_kegiatan', 'like', '%' . $request->search . '%')
                         ->orWhere('nama_ruangan', 'like', '%' . $request->search . '%')
                         ->orWhere('nomor_Whatsapp', 'like', '%' . $request->search . '%')
                         ->orWhere('keterangan', 'like', '%' . $request->search . '%')
                         ->orWhere('status', 'like', '%' . $request->search . '%');
+                });
+            })
+            ->when($role == 'sarpras', function ($query) {
+                return $query->whereHas('room', function ($query) {
+                    $query->whereIn('gedung', ['GOR', 'Anggrek', 'Auditorium']);
+                });
+            })
+            ->when($role == 'baak', function ($query) {
+                return $query->whereHas('room', function ($query) {
+                    $query->whereIn('gedung', ['Pendidikan', 'FLTB']);
                 });
             })
             ->get();

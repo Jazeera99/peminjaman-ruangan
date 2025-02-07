@@ -46,16 +46,23 @@ class DashBoardController extends Controller
             $validGedung = ['GOR', 'Anggrek', 'Auditorium'];
         } elseif ($role === 'baak') {
             $validGedung = ['Pendidikan', 'FLTB'];
+        } elseif ($role === 'admin') {
+            $validGedung = ['Pendidikan', 'FLTB', 'GOR', 'Anggrek', 'Auditorium'];
         }
 
         // Mendefinisikan tanggal hari ini
         $tanggalHariIni = Carbon::today();
 
-        // Statistik booking untuk hari ini berdasarkan gedung yang valid
-        $pendingBookings = Peminjaman::whereDate('tanggal_kegiatan', $tanggalHariIni)->where('status', 'PENDING')->count();
-        $ditolakBookings = Peminjaman::whereDate('tanggal_kegiatan', $tanggalHariIni)->where('status', 'ditolak')->count();
-        $disetujuiBookings = Peminjaman::whereDate('tanggal_kegiatan', $tanggalHariIni)->where('status', 'disetujui')->count();
-        $selesaiBookings = Peminjaman::whereDate('tanggal_kegiatan', $tanggalHariIni)->where('status', 'selesai')->count();
+        // Query base untuk booking dengan join ke tabel ruangan
+        $bookingQuery = Peminjaman::join('ruangans', 'peminjamen.room_id', '=', 'ruangans.id')
+            ->whereDate('peminjamen.tanggal_kegiatan', $tanggalHariIni)
+            ->whereIn('ruangans.gedung', $validGedung);
+
+        // Statistik booking berdasarkan gedung yang sesuai role
+        $pendingBookings = (clone $bookingQuery)->where('peminjamen.status', 'PENDING')->count();
+        $ditolakBookings = (clone $bookingQuery)->where('peminjamen.status', 'ditolak')->count();
+        $disetujuiBookings = (clone $bookingQuery)->where('peminjamen.status', 'disetujui')->count();
+        $selesaiBookings = (clone $bookingQuery)->where('peminjamen.status', 'selesai')->count();
         $totalBookings = $pendingBookings + $ditolakBookings + $disetujuiBookings + $selesaiBookings;
 
         // User statistics for the dashboard

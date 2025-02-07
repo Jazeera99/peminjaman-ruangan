@@ -18,15 +18,19 @@ class RuanganController extends Controller
 
         // Admin bisa melihat semua ruangan
         if ($role === 'admin') {
-            $ruangans = Ruangan::all();
+            $ruangans = Ruangan::orderBy('nama', 'asc')->get();
         }
         // Sarpras hanya bisa melihat ruangan dari gedung tertentu
         elseif ($role === 'sarpras') {
-            $ruangans = Ruangan::whereIn('gedung', ['GOR', 'Anggrek', 'Auditorium'])->get();
+            $ruangans = Ruangan::whereIn('gedung', ['GOR', 'Anggrek', 'Auditorium'])
+                              ->orderBy('nama', 'asc')
+                              ->get();
         }
         // BAAK hanya bisa melihat ruangan di gedung Pendidikan
         elseif ($role === 'baak') {
-            $ruangans = Ruangan::whereIn('gedung', ['Pendidikan', 'FLTB'])->get();
+            $ruangans = Ruangan::whereIn('gedung', ['Pendidikan', 'FLTB'])
+                              ->orderBy('nama', 'asc')
+                              ->get();
         }
         // Peminjam tidak seharusnya melihat daftar ruangan
         else {

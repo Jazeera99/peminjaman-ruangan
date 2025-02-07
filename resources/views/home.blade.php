@@ -9,7 +9,7 @@
                 <div class="col-lg-6">
                     <h1 class="display-4 fw-bold mb-4">Sistem Peminjaman Ruangan</h1>
                     <p class="lead mb-4">Selamat datang di sistem peminjaman ruangan. Kelola dan atur peminjaman ruangan dengan mudah dan efisien.</p>
-                    <a href="/login" class="btn btn-dark btn-lg px-4">Mulai Sekarang</a>
+                    <a href="/login" class="btn btn-primary btn-lg px-4">Mulai Sekarang</a>
                 </div>
                 <div class="col-lg-6">
                     <img src="../images/logo-black-roomease.png" alt="roomease Image" class="img-fluid">
@@ -130,7 +130,19 @@
     transform: translateY(-5px);
 }
 
-.bi {    line-height: 1;
+.bi {    
+    line-height: 1;
+}
+
+/* Tambahkan style untuk button */
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
 }
 </style>
 @endsection

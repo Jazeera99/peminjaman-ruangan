@@ -3,9 +3,9 @@
 @section('content')
     <div class="container mt-4">
         <div class="text-left">
-            <a href="{{ route('download.excel', ['month' => request('month'), 'year' => request('year'), 'peminjam' => request('peminjam')]) }}"
+            <a href="{{ route('download.excel', ['month' => request('month'), 'year' => request('year'), 'search' => request('search')]) }}"
                 class="btn btn-success">Unduh Excel</a>
-            <a href="{{ route('download.pdf', ['month' => request('month'), 'year' => request('year'), 'peminjam' => request('peminjam')]) }}"
+            <a href="{{ route('download.pdf', ['month' => request('month'), 'year' => request('year'), 'search' => request('search')]) }}"
                 class="btn btn-danger">Unduh PDF</a>
         </div>
         <!-- Form Filter -->
@@ -70,7 +70,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($peminjamanRuangans as $peminjaman)
+                    @forelse ($peminjamanRuangans as $peminjaman)
                         <tr>
                             <td>{{ $peminjaman->id }}</td>
                             <td>{{ $peminjaman->tanggal_kegiatan }}</td>
@@ -84,16 +84,22 @@
                             <td>{{ $peminjaman->keterangan }}</td>
                             <td>
                                 @if ($peminjaman->pas_foto)
-                                    <img src="{{ asset('storage/' . $peminjaman->pas_foto) }}" alt="Pas Foto"
-                                        width="50">
+                                    <a href="{{ asset('storage/' . $peminjaman->pas_foto) }}" 
+                                       target="_blank" 
+                                       class="btn btn-sm btn-primary">
+                                        Lihat Pas Foto
+                                    </a>
                                 @else
                                     -
                                 @endif
                             </td>
                             <td>
                                 @if ($peminjaman->file)
-                                    <img src="{{ asset('storage/' . $peminjaman->file) }}" alt="Surat Permohonan"
-                                        width="50">
+                                    <a href="{{ asset('storage/' . $peminjaman->file) }}" 
+                                       target="_blank"
+                                       class="btn btn-sm btn-primary">
+                                        Lihat File
+                                    </a>
                                 @else
                                     -
                                 @endif
@@ -114,7 +120,11 @@
                                     data-bs-target="#rejectModal{{ $peminjaman->id }}">Ditolak</button>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="14" class="text-center">Data peminjaman tidak ditemukan</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
