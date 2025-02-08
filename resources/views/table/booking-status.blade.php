@@ -71,55 +71,54 @@
                 </thead>
                 <tbody>
                     @forelse ($peminjamanRuangans as $peminjaman)
-                        <tr>
-                            <td>{{ $peminjaman->id }}</td>
-                            <td>{{ $peminjaman->tanggal_kegiatan }}</td>
-                            <td>{{ \Carbon\Carbon::parse($peminjaman->waktu_mulai)->format('H:i') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($peminjaman->waktu_selesai)->format('H:i') }}</td>
-                            <td>{{ $peminjaman->room->nama ?? '-' }}</td>
-                            <td>{{ $peminjaman->nama_peminjam }}</td>
-                            <td>{{ $peminjaman->user->nama ?? '-' }}</td>
-                            <td>{{ $peminjaman->nama_kegiatan }}</td>
-                            <td>{{ $peminjaman->nomor_Whatsapp }}</td>
-                            <td>{{ $peminjaman->keterangan }}</td>
-                            <td>
-                                @if ($peminjaman->pas_foto)
-                                    <a href="{{ asset('storage/' . $peminjaman->pas_foto) }}" 
-                                       target="_blank" 
-                                       class="btn btn-sm btn-primary">
-                                        Lihat Pas Foto
-                                    </a>
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td>
-                                @if ($peminjaman->file)
-                                    <a href="{{ asset('storage/' . $peminjaman->file) }}" 
-                                       target="_blank"
-                                       class="btn btn-sm btn-primary">
-                                        Lihat File
-                                    </a>
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td>{{ $peminjaman->status }}</td>
-                            <td class="d-flex justify-content-center">
-                                <!-- Button Disetujui -->
-                                <form action="{{ route('peminjaman.status', $peminjaman->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="status" value="disetujui">
-                                    <button type="submit" class="btn btn-success btn-sm me-2">Disetujui</button>
-                                </form>
+                        @if ($peminjaman->status !== 'ditolak')
+                            <tr>
+                                <td>{{ $peminjaman->id }}</td>
+                                <td>{{ $peminjaman->tanggal_kegiatan }}</td>
+                                <td>{{ \Carbon\Carbon::parse($peminjaman->waktu_mulai)->format('H:i') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($peminjaman->waktu_selesai)->format('H:i') }}</td>
+                                <td>{{ $peminjaman->room->nama ?? '-' }}</td>
+                                <td>{{ $peminjaman->nama_peminjam }}</td>
+                                <td>{{ $peminjaman->user->nama ?? '-' }}</td>
+                                <td>{{ $peminjaman->nama_kegiatan }}</td>
+                                <td>{{ $peminjaman->nomor_Whatsapp }}</td>
+                                <td>{{ $peminjaman->keterangan }}</td>
+                                <td>
+                                    @if ($peminjaman->pas_foto)
+                                        <a href="{{ asset('storage/' . $peminjaman->pas_foto) }}" target="_blank"
+                                            class="btn btn-sm btn-primary">
+                                            Lihat Pas Foto
+                                        </a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($peminjaman->file)
+                                        <a href="{{ asset('storage/' . $peminjaman->file) }}" target="_blank"
+                                            class="btn btn-sm btn-primary">
+                                            Lihat File
+                                        </a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>{{ $peminjaman->status }}
+                                    @if ($peminjaman->status === 'disetujui' && $peminjaman->alasan_disetujui)
+                                        <br><small>{{ $peminjaman->alasan_disetujui }}</small>
+                                    @endif
+                                </td>
+                                <td class="d-flex justify-content-center">
+                                    <!-- Button Disetujui -->
+                                    <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
+                                        data-bs-target="#approveModal{{ $peminjaman->id }}">Disetujui</button>
 
-                                <!-- Button Ditolak -->
-                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#rejectModal{{ $peminjaman->id }}">Ditolak</button>
-                            </td>
-                        </tr>
+                                    <!-- Button Ditolak -->
+                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#rejectModal{{ $peminjaman->id }}">Ditolak</button>
+                                </td>
+                            </tr>
+                        @endif
                     @empty
                         <tr>
                             <td colspan="14" class="text-center">Data peminjaman tidak ditemukan</td>
@@ -129,6 +128,71 @@
             </table>
         </div>
 
+        <!-- Button to toggle rejected peminjaman -->
+        <div class="text-center mt-4">
+            <button class="btn btn-danger" id="tolak">Lihat Peminjaman Ditolak</button>
+        </div>
+
+        <!-- Table untuk menampilkan data yang ditolak -->
+        <div class="table-responsive mt-4" id="rejectedTable" style="display: none;">
+            <h4 style="text-align: center;">PEMINJAMAN DITOLAK</h4>
+            <table class="table table-bordered table-hover table-danger">
+                <thead class="text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>TANGGAL</th>
+                        <th>NAMA KEGIATAN</th>
+                        <th>ALASAN DITOLAK</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($peminjamanRuangans->where('status', 'ditolak') as $peminjaman)
+                        <tr class="text-center">
+                            <td>{{ $peminjaman->id }}</td>
+                            <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_kegiatan)->format('d/m/Y') }}</td>
+                            <td>{{ $peminjaman->nama_kegiatan }}</td>
+                            <td>{{ $peminjaman->alasan_ditolak ?? 'Tidak ada alasan' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal Alasan Persetujuan -->
+        @foreach ($peminjamanRuangans as $peminjaman)
+            <div class="modal fade" id="approveModal{{ $peminjaman->id }}" tabindex="-1"
+                aria-labelledby="approveModalLabel{{ $peminjaman->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="approveModalLabel{{ $peminjaman->id }}">Alasan Persetujuan
+                                Peminjaman
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{ route('peminjaman.status', $peminjaman->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-body">
+                                <input type="hidden" name="status" value="disetujui">
+
+                                <!-- Alasan Persetujuan -->
+                                <div class="mb-3">
+                                    <label for="reason" class="form-label">Alasan Persetujuan</label>
+                                    <textarea class="form-control" name="reason" id="reason{{ $peminjaman->id }}" rows="3" required></textarea>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-success">Kirim Persetujuan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
         <!-- Modal Alasan Penolakan -->
         @foreach ($peminjamanRuangans as $peminjaman)
             <div class="modal fade" id="rejectModal{{ $peminjaman->id }}" tabindex="-1"
@@ -136,9 +200,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="rejectModalLabel{{ $peminjaman->id }}">Alasan Penolakan Peminjaman
+                            <h5 class="modal-title" id="rejectModalLabel{{ $peminjaman->id }}">Alasan Penolakan
+                                Peminjaman
                             </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <form action="{{ route('peminjaman.status', $peminjaman->id) }}" method="POST">
                             @csrf
@@ -165,31 +231,4 @@
     </div>
 @endsection
 
-@section('scripts')
-    <script>
-        function updateStatus(id, status) {
-            fetch(`/peminjaman/${id}/status`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        status: status
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('Gagal memperbarui status');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan');
-                });
-        }
-    </script>
-@endsection
+

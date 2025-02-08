@@ -1,4 +1,4 @@
-<!-- Tabel -->
+<!-- Tabel Riwayat Peminjaman -->
 <div class="table-responsive">
     <h4 style="text-align: center;">RIWAYAT PEMINJAMAN</h4>
     <table class="table table-bordered table-hover table-status">
@@ -17,6 +17,7 @@
                 <th>PAS FOTO</th>
                 <th>SURAT PERMOHONAN</th>
                 <th>STATUS</th>
+                <th>AKSI</th>
             </tr>
         </thead>
         <tbody>
@@ -47,18 +48,13 @@
 
                             @if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
                                 <!-- Jika file adalah gambar, tampilkan sebagai img -->
-                                <img src="{{ asset('storage/' . $peminjaman->file) }}" alt="Surat Permohonan"
-                                    width="50">
+                                <img src="{{ asset('storage/' . $peminjaman->file) }}" alt="Surat Permohonan" width="50">
                             @elseif ($fileExtension == 'pdf')
                                 <!-- Jika file adalah PDF, tampilkan dalam iframe -->
-                                <iframe src="{{ asset('storage/' . $peminjaman->file) }}" width="100"
-                                    height="100"></iframe>
+                                <iframe src="{{ asset('storage/' . $peminjaman->file) }}" width="100" height="100"></iframe>
                             @else
                                 <!-- Jika file format lain, tampilkan link download -->
-                                <a href="{{ asset('storage/' . $peminjaman->file) }}" target="_blank"
-                                    class="btn btn-primary btn-sm">
-                                    Lihat File
-                                </a>
+                                <a href="{{ asset('storage/' . $peminjaman->file) }}" target="_blank" class="btn btn-primary btn-sm">Lihat File</a>
                             @endif
                         @else
                             -
@@ -66,107 +62,67 @@
                     </td>
                     <td class="text-center">
                         {{ $peminjaman->status }}
+                        @if ($peminjaman->status === 'disetujui' && $peminjaman->alasan_disetujui)
+                        @endif
+                    </td>
+                    <td>
+                        @if ($peminjaman->status === 'PENDING')
+                            <form action="{{ route('peminjaman.cancel', $peminjaman->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-warning btn-sm">Batalkan</button>
+                            </form>
+                        @elseif ($peminjaman->status === 'disetujui' && $peminjaman->alasan_disetujui)
+                            <!-- Tampilkan tombol jika alasan disetujui ada -->
+                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#reasonModal" data-alasan="{{ $peminjaman->alasan_disetujui }}">
+                                Lihat Keterangan
+                            </button>
+                        @else
+                            -
+                        @endif
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="11" class="text-center">Tidak ada riwayat peminjaman.</td>
+                    <td colspan="14" class="text-center">Tidak ada riwayat peminjaman.</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 </div>
 
-<!-- Table untuk menampilkan data yang ditolak -->
-@if ($peminjamanRuangans->where('status', 'ditolak')->isNotEmpty())
-    <div class="table-responsive mt-4">
-        <h4 style="text-align: center;">PEMINJAMAN DITOLAK</h4>
-        <table class="table table-bordered table-hover table-danger">
-            <thead class="text-center">
-                <tr>
-                    <th>TANGGAL</th>
-                    <th>NAMA KEGIATAN</th>
-                    <th>ALASAN DITOLAK</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($peminjamanRuangans->where('status', 'ditolak') as $peminjaman)
-                    <tr class="text-center">
-                        <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_kegiatan)->format('d/m/Y') }}</td>
-                        <td>{{ $peminjaman->nama_kegiatan }}</td>
-                        <td>{{ $peminjaman->alasan_ditolak ?? 'Tidak ada alasan' }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-@endif
-
-<!-- Modal -->
+<!-- Modal untuk melihat keterangan -->
 <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="reasonForm" action="/peminjaman/tolak" method="POST">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reasonModalLabel">Alasan Penolakan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="peminjamanId" name="peminjaman_id">
-                    <div class="mb-3">
-                        <label for="reason" class="form-label">Alasan</label>
-                        <textarea id="reason" name="reason" class="form-control" rows="4" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Kirim</button>
-                </div>
-            </form>
+            <div class="modal-header">
+                <h5 class="modal-title" id="reasonModalLabel">Alasan Penolakan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Tampilkan alasan disetujui -->
+                <p id="reasonText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const statusSelects = document.querySelectorAll('.status-select');
+    document.addEventListener("DOMContentLoaded", function () {
         const reasonModal = new bootstrap.Modal(document.getElementById('reasonModal'));
-        const peminjamanIdInput = document.getElementById('peminjamanId');
+        const reasonText = document.getElementById('reasonText');
 
-        statusSelects.forEach(select => {
-            select.addEventListener('change', function() {
-                const selectedValue = this.value;
-                const peminjamanId = this.getAttribute('data-id');
-
-                if (selectedValue === 'ditolak') {
-                    // Set ID peminjaman di modal
-                    peminjamanIdInput.value = peminjamanId;
-                    // Tampilkan modal
-                    reasonModal.show();
-                } else {
-                    // Simpan status langsung jika bukan "ditolak"
-                    fetch(`/peminjaman/update-status/${peminjamanId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector(
-                                    'meta[name="csrf-token"]').getAttribute('content')
-                            },
-                            body: JSON.stringify({
-                                status: selectedValue
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert('Status berhasil diperbarui!');
-                            } else {
-                                alert('Gagal memperbarui status.');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                }
+        // Menangani klik tombol "Lihat Keterangan"
+        const lihatKeteranganButtons = document.querySelectorAll('button[data-bs-toggle="modal"]');
+        lihatKeteranganButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Ambil alasan disetujui dan tampilkan di modal
+                const alasan = this.getAttribute('data-alasan');
+                reasonText.textContent = alasan; // Isi modal dengan alasan disetujui
+                reasonModal.show(); // Tampilkan modal
             });
         });
     });

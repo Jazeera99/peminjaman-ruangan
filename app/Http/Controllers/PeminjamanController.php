@@ -65,7 +65,7 @@ class PeminjamanController extends Controller
     public function downloadExcel(Request $request)
     {
         $role = Auth::user()->role;
-        
+
         $query = Peminjaman::with(['room', 'user'])
             ->when($request->has('month') && $request->month != '', function ($query) use ($request) {
                 return $query->whereMonth('tanggal_kegiatan', $request->month);
@@ -101,7 +101,7 @@ class PeminjamanController extends Controller
     public function downloadPdf(Request $request)
     {
         $role = Auth::user()->role;
-        
+
         $peminjaman = Peminjaman::with(['room', 'user'])
             ->when($request->has('month') && $request->month != '', function ($query) use ($request) {
                 return $query->whereMonth('tanggal_kegiatan', $request->month);
@@ -229,9 +229,9 @@ class PeminjamanController extends Controller
     {
         $peminjaman = Peminjaman::findOrFail($id);
 
-        // Update status based on the request
         if ($request->status === 'disetujui') {
             $peminjaman->status = 'disetujui';
+            $peminjaman->alasan_disetujui = $request->reason;  // Store the approval reason
         } elseif ($request->status === 'ditolak') {
             $peminjaman->status = 'ditolak';
             $peminjaman->alasan_ditolak = $request->reason;  // Store the rejection reason
@@ -246,31 +246,31 @@ class PeminjamanController extends Controller
     {
         $today = now()->format('Y-m-d');
         $currentTime = now()->format('H:i:s');
-        
+
         // Get only rooms with status 'tersedia'
         $total_ruangan = Ruangan::where('status', 'tersedia')->count();
-        
+
         // Get booked room names for today
         $booked_room_names = Peminjaman::whereDate('tanggal_kegiatan', $today)
             ->where('status', 'disetujui')
-            ->where(function($query) use ($currentTime) {
-                $query->where(function($q) use ($currentTime) {
+            ->where(function ($query) use ($currentTime) {
+                $query->where(function ($q) use ($currentTime) {
                     // Room is currently in use
                     $q->where('waktu_mulai', '<=', $currentTime)
-                       ->where('waktu_selesai', '>=', $currentTime);
-                })->orWhere(function($q) use ($currentTime) {
+                        ->where('waktu_selesai', '>=', $currentTime);
+                })->orWhere(function ($q) use ($currentTime) {
                     // Room is booked for later today
                     $q->where('waktu_mulai', '>', $currentTime);
                 });
             })
             ->pluck('nama_ruangan')
             ->toArray();
-        
+
         // Get available rooms (excluding booked rooms and rooms with status 'tidak tersedia')
         $available_rooms = Ruangan::where('status', 'tersedia')
             ->whereNotIn('nama', $booked_room_names)
             ->get();
-        
+
         $stats = [
             'total_ruangan' => $total_ruangan,
             'ruangan_tersedia' => $available_rooms->count(),
@@ -280,5 +280,19 @@ class PeminjamanController extends Controller
         ];
 
         return view('home', compact('stats', 'available_rooms'));
+    }
+
+    public function cancel(Request $request, $id)
+    {
+        $peminjaman = Peminjaman::findOrFail($id);
+
+        if ($peminjaman->status === 'PENDING') {
+            $peminjaman->status = 'dibatalkan';
+            $peminjaman->save();
+
+            return redirect()->route('dashboard', ['role' => 'peminjam'])->with('success', 'Peminjaman berhasil dibatalkan');
+        }
+
+        return redirect()->route('dashboard', ['role' => 'peminjam'])->with('error', 'Peminjaman tidak dapat dibatalkan');
     }
 }

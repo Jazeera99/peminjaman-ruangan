@@ -27,8 +27,10 @@ class BookingController extends Controller
         ]);
 
         // Cari Ruangan dan cek statusnya
-        $ruangan = Ruangan::findOrFail($request->room_id);
-        
+        $ruangan = Ruangan::where('status', 'tersedia')
+            ->orderBy('nama', 'asc') // Mengurutkan berdasarkan nama ruangan secara abjad
+            ->findOrFail($request->room_id);
+
         if ($ruangan->status !== 'tersedia') {
             return redirect()->back()
                 ->with('error', 'Ruangan tidak tersedia untuk peminjaman.')
@@ -80,5 +82,11 @@ class BookingController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Peminjaman berhasil ditambahkan!');
+    }
+
+    public function create()
+    {
+        $ruangans = Ruangan::where('status', 'tersedia')->orderBy('nama', 'asc')->get();
+        return view('form.form-booking', compact('ruangans'));
     }
 }

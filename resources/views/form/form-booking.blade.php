@@ -42,8 +42,10 @@
                                     <label for="room_id" class="form-label">Nama Ruangan</label>
                                     <select id="room_id" name="room_id" class="form-control" required>
                                         <option value="">-- Pilih Ruangan --</option>
-                                        @foreach ($ruangans as $ruangan)
-                                            <option value="{{ $ruangan->id }}">{{ $ruangan->nama }}</option>
+                                        @foreach ($ruangans->sortBy('nama') as $ruangan)
+                                            @if ($ruangan->status === 'tersedia')
+                                                <option value="{{ $ruangan->id }}">{{ $ruangan->nama }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
