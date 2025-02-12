@@ -85,8 +85,9 @@
                                 <td>{{ $peminjaman->keterangan }}</td>
                                 <td>
                                     @if ($peminjaman->pas_foto)
-                                        <a href="{{ asset('storage/' . $peminjaman->pas_foto) }}" target="_blank"
-                                            class="btn btn-sm btn-primary">
+                                        <a href="{{ asset('storage/' . $peminjaman->pas_foto) }}" 
+                                           target="_blank" 
+                                           class="btn btn-sm btn-primary">
                                             Lihat Pas Foto
                                         </a>
                                     @else
@@ -95,8 +96,9 @@
                                 </td>
                                 <td>
                                     @if ($peminjaman->file)
-                                        <a href="{{ asset('storage/' . $peminjaman->file) }}" target="_blank"
-                                            class="btn btn-sm btn-primary">
+                                        <a href="{{ asset('storage/' . $peminjaman->file) }}" 
+                                           target="_blank"
+                                           class="btn btn-sm btn-primary">
                                             Lihat File
                                         </a>
                                     @else
@@ -105,17 +107,29 @@
                                 </td>
                                 <td>{{ $peminjaman->status }}
                                     @if ($peminjaman->status === 'disetujui' && $peminjaman->alasan_disetujui)
-                                        <br><small>{{ $peminjaman->alasan_disetujui }}</small>
                                     @endif
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <!-- Button Disetujui -->
-                                    <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
-                                        data-bs-target="#approveModal{{ $peminjaman->id }}">Disetujui</button>
+                                    @if ($peminjaman->status === 'PENDING')
+                                        <!-- Button Disetujui -->
+                                        <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
+                                            data-bs-target="#approveModal{{ $peminjaman->id }}">Disetujui</button>
 
-                                    <!-- Button Ditolak -->
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#rejectModal{{ $peminjaman->id }}">Ditolak</button>
+                                        <!-- Button Ditolak -->
+                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#rejectModal{{ $peminjaman->id }}">Ditolak</button>
+                                    @elseif ($peminjaman->status === 'disetujui' && $peminjaman->alasan_disetujui)
+                                        <!-- Button Lihat Keterangan -->
+                                        <button class="btn btn-info btn-sm ms-2" data-bs-toggle="modal"
+                                            data-bs-target="#viewReasonModal{{ $peminjaman->id }}">Lihat Keterangan</button>
+                                    @elseif ($peminjaman->status === 'dibatalkan')
+                                        <!-- Button Hapus -->
+                                        <form action="{{ route('peminjaman.destroy', $peminjaman->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endif
@@ -130,7 +144,7 @@
 
         <!-- Button to toggle rejected peminjaman -->
         <div class="text-center mt-4">
-            <button class="btn btn-danger" id="tolak">Lihat Peminjaman Ditolak</button>
+            <button class="btn btn-danger" id="toggleRejectedBtn">Lihat Peminjaman Ditolak</button>
         </div>
 
         <!-- Table untuk menampilkan data yang ditolak -->
@@ -228,7 +242,32 @@
                 </div>
             </div>
         @endforeach
+
+        <!-- Modal Lihat Keterangan -->
+        @foreach ($peminjamanRuangans as $peminjaman)
+            @if ($peminjaman->status === 'disetujui' && $peminjaman->alasan_disetujui)
+                <div class="modal fade" id="viewReasonModal{{ $peminjaman->id }}" tabindex="-1"
+                    aria-labelledby="viewReasonModalLabel{{ $peminjaman->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewReasonModalLabel{{ $peminjaman->id }}">Keterangan Persetujuan
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ $peminjaman->alasan_disetujui }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @endforeach
     </div>
 @endsection
+
 
 

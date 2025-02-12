@@ -295,4 +295,16 @@ class PeminjamanController extends Controller
 
         return redirect()->route('dashboard', ['role' => 'peminjam'])->with('error', 'Peminjaman tidak dapat dibatalkan');
     }
+
+    public function destroy($id)
+    {
+        $peminjaman = Peminjaman::findOrFail($id);
+
+        if (in_array(Auth::user()->role, ['admin', 'sarpras', 'baak']) && $peminjaman->status === 'dibatalkan') {
+            $peminjaman->delete();
+            return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil dihapus');
+        }
+
+        return redirect()->route('peminjaman.index')->with('error', 'Peminjaman tidak dapat dihapus');
+    }
 }

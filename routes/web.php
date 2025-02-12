@@ -19,7 +19,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Dashboard berdasarkan role
 Route::get('/dashboard/{role}', [DashboardController::class, 'dashboard'])
-    ->where('role', 'peminjam|admin|baak|sarpras')->name('dashboard');
+    ->where('role', 'peminjam|admin|baak|sarpras');
 
 // Menampilkan list booking berdasarkan role
 Route::get('/{role}/list-booking', [PeminjamanController::class, 'index'])->name('booking.status');
@@ -45,7 +45,7 @@ Route::delete('/rooms/{id}', [RuanganController::class, 'destroy'])->name('rooms
 Route::get('/dashboard/booking', [DashboardController::class, 'ShowFormBooking'])->name('booking');
 Route::post('/submit-booking', [BookingController::class, 'store']);
 Route::put('/peminjaman/status/{id}', [PeminjamanController::class, 'updateStatus'])->name('peminjaman.status');
-Route::put('/peminjaman/cancel/{id}', [PeminjamanController::class, 'cancel'])->name('peminjaman.cancel');
+Route::delete('/peminjaman/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
 
 // Manajemen User
 Route::get('/user/table/user-baak', [DashboardController::class, 'tableUserBaak']);
