@@ -49,9 +49,6 @@
                             @if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
                                 <!-- Jika file adalah gambar, tampilkan sebagai img -->
                                 <img src="{{ asset('storage/' . $peminjaman->file) }}" alt="Surat Permohonan" width="50">
-                            @elseif ($fileExtension == 'pdf')
-                                <!-- Jika file adalah PDF, tampilkan dalam iframe -->
-                                <iframe src="{{ asset('storage/' . $peminjaman->file) }}" width="100" height="100"></iframe>
                             @else
                                 <!-- Jika file format lain, tampilkan link download -->
                                 <a href="{{ asset('storage/' . $peminjaman->file) }}" target="_blank" class="btn btn-primary btn-sm">Lihat File</a>
@@ -74,7 +71,20 @@
                             </form>
                         @elseif ($peminjaman->status === 'disetujui' && $peminjaman->alasan_disetujui)
                             <!-- Tampilkan tombol jika alasan disetujui ada -->
-                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#reasonModal" data-alasan="{{ $peminjaman->alasan_disetujui }}">
+                            <button type="button" class="btn btn-info btn-sm" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#reasonModal" 
+                                    data-alasan="{{ $peminjaman->alasan_disetujui }}"
+                                    data-status="disetujui">
+                                Lihat Keterangan
+                            </button>
+                        @elseif ($peminjaman->status === 'ditolak' && $peminjaman->alasan_ditolak)
+                            <!-- Tampilkan tombol jika alasan ditolak ada -->
+                            <button type="button" class="btn btn-info btn-sm" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#reasonModal" 
+                                    data-alasan="{{ $peminjaman->alasan_ditolak }}"
+                                    data-status="ditolak">
                                 Lihat Keterangan
                             </button>
                         @else
@@ -96,7 +106,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="reasonModalLabel">Alasan Penolakan</h5>
+                <h5 class="modal-title" id="reasonModalLabel">Alasan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -114,15 +124,19 @@
     document.addEventListener("DOMContentLoaded", function () {
         const reasonModal = new bootstrap.Modal(document.getElementById('reasonModal'));
         const reasonText = document.getElementById('reasonText');
+        const modalTitle = document.getElementById('reasonModalLabel');
 
         // Menangani klik tombol "Lihat Keterangan"
         const lihatKeteranganButtons = document.querySelectorAll('button[data-bs-toggle="modal"]');
         lihatKeteranganButtons.forEach(button => {
             button.addEventListener('click', function () {
-                // Ambil alasan disetujui dan tampilkan di modal
                 const alasan = this.getAttribute('data-alasan');
-                reasonText.textContent = alasan; // Isi modal dengan alasan disetujui
-                reasonModal.show(); // Tampilkan modal
+                const status = this.getAttribute('data-status');
+                
+                // Update modal title based on status
+                modalTitle.textContent = status === 'disetujui' ? 'Alasan Persetujuan' : 'Alasan Penolakan';
+                reasonText.textContent = alasan;
+                reasonModal.show();
             });
         });
     });
